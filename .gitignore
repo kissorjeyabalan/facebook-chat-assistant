@@ -41,3 +41,7 @@ typings/
 
 # next.js build output
 .next
+
+# IntelliJ Specific
+.idea/
+.idea_modules/
