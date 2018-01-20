@@ -1,0 +1,61 @@
+ {
+    "extends": [
+      "tslint-microsoft-contrib"
+    ],
+    "rules": {
+      "mocha-no-side-effect-code": false,
+      "missing-jsdoc": false,
+      "no-relative-imports": false,
+      "export-name": false,
+      "promise-function-async": false,
+      "no-void-expression": false,
+      "no-redundant-jsdoc": false,
+      "trailing-comma": [
+        true,
+        {
+          "multiline": "always",
+          "singleline": "never"
+        }
+      ],
+      "linebreak-style": [true, "CRLF"],
+      "typedef": [
+        true,
+        "parameter",
+        "arrow-parameter",
+        "property-declaration",
+        "member-variable-declaration"
+      ],
+      "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-module",
+            "check-separator",
+            "check-type"
+        ],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            },
+            {
+                "call-signature": "onespace",
+                "index-signature": "onespace",
+                "parameter": "onespace",
+                "property-declaration": "onespace",
+                "variable-declaration": "onespace"
+            }
+        ],
+        "no-internal-module": true,
+        "no-trailing-whitespace": true,
+        "no-null-keyword": true,
+        "prefer-const": true,
+        "jsdoc-format": true,
+        "no-console": false
+    }
+  }
