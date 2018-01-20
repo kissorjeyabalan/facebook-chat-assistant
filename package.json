@@ -2,10 +2,14 @@
   "name": "facebook-chat-assistant",
   "version": "0.0.1",
   "description": "A facebook chat bot, intended to be used in group chats.",
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 8.9.0"
+  },
   "author": {
-      "name": "Kissor Jeyabalan",
-      "email": "dev@kij.no",
-      "url": "https://kij.no/"
+    "name": "Kissor Jeyabalan",
+    "email": "dev@kij.no",
+    "url": "https://kij.no/"
   },
   "repository": {
     "type": "git",
@@ -14,10 +18,27 @@
   "license": "ISC",
   "main": "index.js",
   "devDependencies": {
-    "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-types",
-    "@types/node": "^9.3.0"
+    "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-typings",
+    "@types/node": "^9.3.0",
+    "rimraf": "~2.6.2",
+    "tslint": "~5.9.1",
+    "tslint-microsoft-contrib": "~5.0.2",
+    "tsutils": "~2.18.0",
+    "typescript": "~2.6.2"
+  },
+  "scripts": {
+    "clean": "rimraf coverage build tmp",
+    "build": "tsc -p tsconfig.release.json",
+    "watch": "tsc -w -p tsconfig.release.json",
+    "lint": "tslint -t stylish --project \"tsconfig.json\"",
+    "pretest": "npm run lint",
+    "test": "npm run test-only",
+    "test-only": "jest --coverage",
+    "test:watch": "jest --watch",
+    "start": "node build/src/server.js"
   },
   "dependencies": {
-    "facebook-chat-api": "github:Schmavery/facebook-chat-api"
+    "facebook-chat-api": "github:Schmavery/facebook-chat-api",
+    "tslib": "~1.8.1"
   }
 }
