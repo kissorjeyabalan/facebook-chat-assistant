@@ -14,8 +14,8 @@ pids
 # Coverage
 coverage
 
-# Binary
-build/Release
+# Processed JS file
+build/
 
 # Dependency
 node_modules/
