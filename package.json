@@ -2,12 +2,17 @@
   "name": "facebook-chat-assistant",
   "version": "0.0.1",
   "description": "A facebook chat bot, intended to be used in group chats.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+      "name": "Kissor Jeyabalan",
+      "email": "dev@kij.no",
+      "url": "https://kij.no/"
   },
-  "author": "Kissor Jeyabalan",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kissorjeyabalan/facebook-chat-assistant.git"
+  },
   "license": "ISC",
+  "main": "index.js",
   "devDependencies": {
     "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-types",
     "@types/node": "^9.3.0"
