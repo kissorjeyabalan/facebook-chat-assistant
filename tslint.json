@@ -17,7 +17,7 @@
           "singleline": "never"
         }
       ],
-      "linebreak-style": [true, "CRLF"],
+      "linebreak-style": [true, "LF"],
       "typedef": [
         true,
         "parameter",
