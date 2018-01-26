@@ -1,0 +1,30 @@
+mongoose:
+  host: localhost
+  port: 27017
+  database: bot
+
+account:
+  username: EMAIL/PHONE
+  password: PASSWORD
+  state: /data/bot/state.json
+
+bot:
+  trigger: run
+  name:
+    full: Nickname
+    nick: Nick
+  id:
+    - 13434343434343
+  admin:
+    - 12039481234433
+
+login:
+  logLevel: warn
+  selfListen: false
+  listenEvents: false
+  pageID: 
+  updatePresence: false
+  forceLogin: false
+  timeout: 30
+
+  
