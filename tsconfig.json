@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
+    "experimentalDecorators": true,
     "allowJs": false,
     "importHelpers": true,
     "alwaysStrict": true,

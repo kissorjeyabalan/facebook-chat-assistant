@@ -1,13 +1,16 @@
 import * as mongoose from 'mongoose';
+import { Configuration } from '../config/Configuration';
 
 export class ConnectionManager {
     private static instance: ConnectionManager = new ConnectionManager();
+    private config: Configuration;
     private connection: mongoose.Connection;
 
     private constructor() {
         if (ConnectionManager.instance) {
             throw Error('Error: ConnectionManager already exists.');
         }
+        this.config = new Configuration();
         ConnectionManager.instance = this;
     }
 
@@ -17,7 +20,10 @@ export class ConnectionManager {
     }
     public openConnection(): void {
         if (this.connection === undefined) {
-            mongoose.connect('mongodb://localhost/test');
+            const host: string = this.config.fetch('mongoose.host');
+            const port: string = this.config.fetch('mongoose.port');
+            const database: string = this.config.fetch('mongoose.database');
+            mongoose.connect(`mongodb://${host}${port}${database}`);
             this.connection = mongoose.connection;
         }
     }

@@ -19,14 +19,23 @@
   "main": "index.js",
   "devDependencies": {
     "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-typings",
+    "@types/js-yaml": "^3.10.1",
     "@types/mongodb": "^3.0.5",
-    "@types/mongoose": "^4.7.33",
     "@types/node": "^9.3.0",
     "rimraf": "~2.6.2",
     "tslint": "~5.9.1",
     "tslint-microsoft-contrib": "~5.0.2",
     "tsutils": "~2.18.0",
     "typescript": "~2.6.2"
+  },
+  "dependencies": {
+    "brototype": "0.0.6",
+    "facebook-chat-api": "github:Schmavery/facebook-chat-api",
+    "js-yaml": "^3.10.0",
+    "mongodb": "^3.0.1",
+    "mongoose": "^5.0.1",
+    "tslib": "~1.8.1",
+    "typegoose": "^3.8.0"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
@@ -38,12 +47,5 @@
     "test-only": "jest --coverage",
     "test:watch": "jest --watch",
     "start": "node build/src/server.js"
-  },
-  "dependencies": {
-    "facebook-chat-api": "github:Schmavery/facebook-chat-api",
-    "mongodb": "^3.0.1",
-    "mongoose": "^5.0.1",
-    "tslib": "~1.8.1",
-    "typegoose": "^3.8.0"
   }
 }
