@@ -37,9 +37,9 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
                 process.exit();
         }
     }
-    fs.writeFileSync(config.fetch('app.state'), JSON.stringify(api.getAppState()));
+    fs.writeFileSync(config.fetch('account.state'), JSON.stringify(api.getAppState()));
 });
 
 function hasAppState(): boolean {
-    return fs.existsSync(config.fetch('app.state'));
+    return fs.existsSync(config.fetch('account.state'));
 }
