@@ -17,6 +17,7 @@
           "singleline": "never"
         }
       ],
+      "linebreak-style": false,
       "typedef": [
         true,
         "parameter",
@@ -24,6 +25,7 @@
         "property-declaration",
         "member-variable-declaration"
       ],
+      "variable-name": false,
       "whitespace": [
             true,
             "check-branch",
@@ -55,6 +57,7 @@
         "no-null-keyword": true,
         "prefer-const": true,
         "jsdoc-format": true,
-        "no-console": false
+        "no-console": false,
+        "align": false
     }
   }
