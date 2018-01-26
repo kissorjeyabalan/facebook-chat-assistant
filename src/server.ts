@@ -17,7 +17,7 @@ const options: chat.ApiOptions = {
 };
 
 const creds: chat.LoginCredentials | chat.AppState = hasAppState() ? {
-    appState: JSON.parse(fs.readFileSync(config.fetch('app.state'), 'utf-8')),
+    appState: JSON.parse(fs.readFileSync(config.fetch('account.state'), 'utf-8')),
 } : {
     email: config.fetch('account.username'),
     password: config.fetch('account.password'),
