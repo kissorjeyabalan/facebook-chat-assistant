@@ -18,12 +18,13 @@ export class ConnectionManager {
     public static getInstance(): ConnectionManager {
         return ConnectionManager.instance;
     }
+
     public openConnection(): void {
         if (this.connection === undefined) {
             const host: string = this.config.fetch('mongoose.host');
             const port: string = this.config.fetch('mongoose.port');
             const database: string = this.config.fetch('mongoose.database');
-            mongoose.connect(`mongodb://${host}${port}${database}`);
+            mongoose.connect(`mongodb://${host}:${port}/${database}`, { useMongoClient: true });
             this.connection = mongoose.connection;
         }
     }
