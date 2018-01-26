@@ -3,14 +3,13 @@ import { Configuration } from '../config/Configuration';
 
 export class ConnectionManager {
     private static instance: ConnectionManager = new ConnectionManager();
-    private config: Configuration;
+    private config: Configuration = Configuration.getInstance();
     private connection: mongoose.Connection;
 
     private constructor() {
         if (ConnectionManager.instance) {
             throw Error('Error: ConnectionManager already exists.');
         }
-        this.config = new Configuration();
         ConnectionManager.instance = this;
     }
 
