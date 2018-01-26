@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-typings",
     "@types/mongodb": "^3.0.4",
+    "@types/mongoose": "^4.7.33",
     "@types/node": "^9.3.0",
     "rimraf": "~2.6.2",
     "tslint": "~5.9.1",
@@ -41,6 +42,8 @@
   "dependencies": {
     "facebook-chat-api": "github:Schmavery/facebook-chat-api",
     "mongodb": "^3.0.1",
-    "tslib": "~1.8.1"
+    "mongoose": "^5.0.1",
+    "tslib": "~1.8.1",
+    "typegoose": "^3.8.0"
   }
 }
