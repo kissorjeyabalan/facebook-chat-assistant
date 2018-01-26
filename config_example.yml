@@ -22,7 +22,7 @@ login:
   logLevel: warn
   selfListen: false
   listenEvents: false
-  pageID: 
+  pageID: ''
   updatePresence: false
   forceLogin: false
   timeout: 30
