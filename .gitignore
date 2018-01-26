@@ -45,3 +45,5 @@ typings/
 # IntelliJ Specific
 .idea/
 .idea_modules/
+
+config.yml
