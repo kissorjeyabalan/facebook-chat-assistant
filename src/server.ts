@@ -3,9 +3,12 @@ import * as fs from 'fs';
 import { setTimeout } from 'timers';
 import { Configuration } from './config/Configuration';
 import { ConnectionManager } from './db/ConnectionManager';
+import { MessageParser } from './parser/MessageParser';
 
 ConnectionManager.getInstance().openConnection();
 const config = Configuration.getInstance();
+const mp: MessageParser = new MessageParser();
+mp.init();
 
 const options: chat.ApiOptions = {
     logLevel: config.fetch('login.logLevel'),
@@ -38,6 +41,9 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
         }
     }
     fs.writeFileSync(config.fetch('account.state'), JSON.stringify(api.getAppState()));
+    api.listen((error: chat.Error, message: chat.MessageEvent) => {
+        mp.handle(message.body);
+    });
 });
 
 function hasAppState(): boolean {

@@ -19,6 +19,7 @@
   "main": "index.js",
   "devDependencies": {
     "@types/facebook-chat-api": "github:kissorjeyabalan/facebook-chat-api-typings",
+    "@types/glob": "^5.0.35",
     "@types/js-yaml": "^3.10.1",
     "@types/mongodb": "^3.0.5",
     "@types/mongoose": "^4.7.33",
@@ -32,6 +33,7 @@
   "dependencies": {
     "brototype": "0.0.6",
     "facebook-chat-api": "github:Schmavery/facebook-chat-api",
+    "glob": "^7.1.2",
     "js-yaml": "^3.10.0",
     "mongodb": "^3.0.1",
     "mongoose": "^4.11.1",

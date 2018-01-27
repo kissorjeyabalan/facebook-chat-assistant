@@ -21,7 +21,6 @@
       "typedef": [
         true,
         "parameter",
-        "arrow-parameter",
         "property-declaration",
         "member-variable-declaration"
       ],
@@ -58,6 +57,12 @@
         "prefer-const": true,
         "jsdoc-format": true,
         "no-console": false,
-        "align": false
+        "align": false,
+        "no-any": false,
+        "non-literal-require": false,
+        "no-unnecessary-callback-wrapper": false,
+        "no-require-imports": false,
+        "no-default-export": false,
+        "interface-name": false
     }
   }
