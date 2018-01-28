@@ -7,7 +7,7 @@ interface ISavedMessage {
     timestamp?: number;
 }
 
-type SavedMessageType = ISavedMessage & mongoose.Document;
+interface ISavedMessageModel extends ISavedMessage, mongoose.Document {}
 
 const savedMessageSchema = new mongoose.Schema({
     threadID: {type: String, required: true},
@@ -16,15 +16,11 @@ const savedMessageSchema = new mongoose.Schema({
     timestamp: Number,
 }, {strict: false});
 
-// const SavedMessage = mongoose.model<SavedMessageType>('SavedMessage', savedMessageSchema);
-
-// tslint:disable-next-line:no-any
-function createSavedMessage(savedMessage: ISavedMessage): any {
+function createSavedMessage(savedMessage: ISavedMessage): mongoose.Model<ISavedMessageModel> {
     const threadID = savedMessage.threadID;
     const collectionName = (`SavedMessages-${threadID}`);
-    const model = mongoose.model<SavedMessageType>('SavedMessage', savedMessageSchema, collectionName);
 
-    return new model(savedMessage);
+    return mongoose.model<ISavedMessageModel>('SavedMessage', savedMessageSchema, collectionName);
 }
 
-export {ISavedMessage, createSavedMessage};
+export {ISavedMessage, ISavedMessageModel, createSavedMessage};
