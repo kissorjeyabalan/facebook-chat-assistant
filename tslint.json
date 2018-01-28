@@ -63,6 +63,8 @@
         "no-unnecessary-callback-wrapper": false,
         "no-require-imports": false,
         "no-default-export": false,
-        "interface-name": false
+        "interface-name": false,
+        "no-empty": false,
+        "no-suspicious-comment": false
     }
   }
