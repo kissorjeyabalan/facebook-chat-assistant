@@ -16,13 +16,10 @@ export default class CommandHandler extends Handler {
         this.api = Global.getInstance().getApi();
 
         this.commandInstances = new Map();
-        console.log('globbing....');
-        console.log(glob.sync('../command/**/*.js', {cwd: __dirname}));
         glob.sync('../command/**/*.js', {cwd: __dirname})
         .map(cbfn => require(cbfn).default)
         .filter(e => e.prototype instanceof Command)
         .map(e => {
-            console.log(e.prototype.constructor.name);
             if (!Configuration.getInstance().isCmdEnabled(e.prototype.constructor.name)) {
                 console.info(`Command ${e.prototype.constructor.name} is not enabled.`);
 
@@ -36,7 +33,6 @@ export default class CommandHandler extends Handler {
             this.commandInstances.set(instance.getHelp().getCmd().toLowerCase(), instance);
             console.log(`Command ${instance.getHelp().getName()} has been enabled.`);
         });
-        console.log('finished globbing...');
     }
 
     public handle(message: MessageEvent): MessageEvent | Promise<MessageEvent> {

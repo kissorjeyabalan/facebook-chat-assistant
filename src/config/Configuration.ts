@@ -46,8 +46,6 @@ export class Configuration {
     }
 
     public isCmdEnabled(cmd: string): boolean {
-        console.log(`commands.${cmd}.enabled`);
-
         return this.fetch(`commands.${cmd}.enabled`);
     }
 
