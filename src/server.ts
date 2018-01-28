@@ -3,12 +3,12 @@ import * as fs from 'fs';
 import { setTimeout } from 'timers';
 import { Configuration } from './config/Configuration';
 import { ConnectionManager } from './db/ConnectionManager';
+import { Global } from './Global';
 import { MessageParser } from './parser/MessageParser';
 
 ConnectionManager.getInstance().openConnection();
 const config = Configuration.getInstance();
 const mp: MessageParser = new MessageParser();
-mp.init();
 
 const options: chat.ApiOptions = {
     logLevel: config.fetch('login.logLevel'),
@@ -19,8 +19,8 @@ const options: chat.ApiOptions = {
     forceLogin: config.fetch('login.forceLogin'),
 };
 
-const creds: chat.LoginCredentials | chat.AppState = hasAppState() ? {
-    appState: JSON.parse(fs.readFileSync(config.fetch('account.state'), 'utf-8')),
+const creds: chat.LoginCredentials | chat.AppState = config.hasAppState() ? {
+    appState: config.getAppState(),
 } : {
     email: config.fetch('account.username'),
     password: config.fetch('account.password'),
@@ -41,11 +41,8 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
         }
     }
     fs.writeFileSync(config.fetch('account.state'), JSON.stringify(api.getAppState()));
+    Global.getInstance().setApi(api);
     api.listen((error: chat.Error, message: chat.MessageEvent) => {
-        mp.handle(message.body);
+        mp.handle(message);
     });
 });
-
-function hasAppState(): boolean {
-    return fs.existsSync(config.fetch('account.state'));
-}
