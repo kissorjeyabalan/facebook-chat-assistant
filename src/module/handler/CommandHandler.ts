@@ -42,6 +42,8 @@ export default class CommandHandler extends Handler {
             return message;
         }
 
+        setTimeout(() => api.markAsRead(message.threadID), 333);
+
         const cmd = this.getMsgCmd(message);
         const args = this.getCmdArgs(message);
 
