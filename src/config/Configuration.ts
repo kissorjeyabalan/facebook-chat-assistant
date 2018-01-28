@@ -37,4 +37,18 @@ export class Configuration {
         }
     }
 
+    public hasAppState(): boolean {
+        return fs.existsSync(this.fetch('account.state'));
+    }
+
+    public getAppState(): any {
+        return JSON.parse(fs.readFileSync(this.fetch('account.state'), 'utf-8'));
+    }
+
+    public isCmdEnabled(cmd: string): boolean {
+        console.log(`commands.${cmd}.enabled`);
+
+        return this.fetch(`commands.${cmd}.enabled`);
+    }
+
 }
