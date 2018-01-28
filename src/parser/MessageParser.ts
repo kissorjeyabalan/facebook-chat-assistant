@@ -33,7 +33,7 @@ export class MessageParser {
             this.handlerInstances = handlers.map(name => classes.find(i => i.constructor.name === name));
     }
 
-    public handle(message: MessageEvent): Promise<MessageEvent> {
+    public handle(message: MessageEvent): Promise<any> {
         let promises = Promise.resolve(message);
 
         for (const handler of this.handlerInstances) {
