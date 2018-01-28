@@ -4,16 +4,16 @@ import { Configuration } from '../../config/Configuration';
 import { Global } from '../../Global';
 import Command from '../Command';
 import Handler from '../Handler';
+import { setTimeout } from 'timers';
+import { HelpDetails } from '../HelpDetails';
 
 export default class CommandHandler extends Handler {
     private trigger: string;
-    private api: Api;
     private commandInstances: Map<string, Command>;
 
     private constructor() {
         super();
         this.trigger = Configuration.getInstance().fetch('bot.trigger');
-        this.api = Global.getInstance().getApi();
 
         this.commandInstances = new Map();
         glob.sync('../command/**/*.js', {cwd: __dirname})
@@ -35,7 +35,9 @@ export default class CommandHandler extends Handler {
         });
     }
 
-    public handle(message: MessageEvent): MessageEvent | Promise<MessageEvent> {
+    public async handle(message: MessageEvent): Promise<any> {
+        const api = Global.getInstance().getApi();
+
         if (!this.isCmd(message)) {
             return message;
         }
@@ -44,7 +46,9 @@ export default class CommandHandler extends Handler {
         const args = this.getCmdArgs(message);
 
         if (cmd === 'help') {
-            // TODO: Print help
+            api.sendMessage(this.printHelp(args), message.threadID);
+
+            return message;
         }
 
         const cmdInstance = this.commandInstances.get(cmd);
@@ -54,10 +58,17 @@ export default class CommandHandler extends Handler {
             return message;
         }
 
-        // TODO: Check if syntax is valid
-        cmdInstance.run(message, args).catch(err => console.warn(err));
+        if (!cmdInstance.isValid(args)) {
+            api.sendMessage(`\u{274c} Invalid syntax!\n\nUsage: \n${cmdInstance.getHelp().getSyntax()}`, message.threadID);
 
-        return message;
+            return message;
+        } else {
+            const endTyping = api.sendTypingIndicator(message.threadID);
+            await cmdInstance.run(message, args).catch(err => console.warn(err));
+            endTyping();
+
+            return message;
+        }
     }
 
     private isCmd(message: MessageEvent) {
@@ -69,6 +80,36 @@ export default class CommandHandler extends Handler {
     }
 
     private getCmdArgs(message: MessageEvent) {
-        return message.body.substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim();
+        return message.body.substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim().toLowerCase();
     }
+
+    private printHelp(cmd?: string) {
+        let help: string;
+        if (cmd.length === 0) {
+            help = '\u{1f481} Available commands:\n\n';
+            this.commandInstances.forEach((instance, command) => {
+                if (instance.getHelp().isHidden()) {
+                    return;
+                }
+                help += `${instance.getHelp().getCmd()} — ${instance.getHelp().getShortDescription()}\n`;
+            });
+            help += '\nhelp <cmd> — more info';
+
+            return help;
+        }
+
+        if (this.commandInstances.get(cmd.split(' ')[0]) === undefined) {
+            help = `'${cmd.split(' ')[0]}' is not a valid command.`;
+        } else {
+            const details: HelpDetails = this.commandInstances.get(cmd.split(' ')[0]).getHelp();
+            help = `\u{2139} ${details.getName()}:`;
+            help += `\n${details.getDescription()}`;
+            help += `\n\nSyntax: \n${details.getSyntax()}`;
+            help += `\n\nExample: \n${details.getExample()}`;
+            help += details.isAdminOnly() ? '\n\n(Requires admin privileges)' : '';
+        }
+
+        return help;
+    }
+
 }
