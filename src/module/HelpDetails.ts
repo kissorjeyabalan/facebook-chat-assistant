@@ -5,10 +5,11 @@ export class HelpDetails {
     private description: string;
     private syntax: string;
     private example: string;
+    private hidden: boolean;
     private adminOnly: boolean;
 
     public constructor(name: string, cmd: string, shortDescription: string,
-        description: string, syntax: string, example: string,
+        description: string, syntax: string, example: string, hidden: boolean,
         adminOnly: boolean) {
 
         this.name = name;
@@ -17,6 +18,7 @@ export class HelpDetails {
         this.description = description;
         this.syntax = syntax;
         this.example = example;
+        this.hidden = hidden;
         this.adminOnly = adminOnly;
     }
 
@@ -41,6 +43,10 @@ export class HelpDetails {
 
     public getExample(): string {
         return this.example;
+    }
+
+    public isHidden(): boolean {
+        return this.hidden;
     }
 
     public isAdminOnly(): boolean {
