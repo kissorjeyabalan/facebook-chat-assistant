@@ -4,7 +4,6 @@ import { Configuration } from '../../config/Configuration';
 import { Global } from '../../Global';
 import Command from '../Command';
 import Handler from '../Handler';
-import { setTimeout } from 'timers';
 import { HelpDetails } from '../HelpDetails';
 
 export default class CommandHandler extends Handler {
