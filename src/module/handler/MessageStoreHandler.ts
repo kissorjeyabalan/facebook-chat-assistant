@@ -1,5 +1,6 @@
 import { MessageEvent } from 'facebook-chat-api';
-import { createSavedMessage, ISavedMessage } from '../../db/model/ISavedMessage';
+import { GroupHelper } from '../../db/helper/GroupHelper';
+import { getModel, ISavedMessage } from '../../db/model/SavedMessage';
 import Handler from '../Handler';
 
 export default class MessageStoreHandler extends Handler {
@@ -11,8 +12,11 @@ export default class MessageStoreHandler extends Handler {
             timestamp: message.timestamp,
         };
 
-        const dbMsg = new (createSavedMessage(savedMessage))(savedMessage);
+        const dbMsg = new (getModel(message))(savedMessage);
         dbMsg.save();
+
+        const test = GroupHelper.getInstance();
+        test.updateGroupInfo(message);
 
         return message;
     }
