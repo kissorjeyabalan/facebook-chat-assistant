@@ -37,6 +37,7 @@
     "js-yaml": "^3.10.0",
     "mongodb": "^3.0.1",
     "mongoose": "^4.11.1",
+    "mongoose-map": "^1.1.0",
     "tslib": "~1.8.1"
   },
   "scripts": {
