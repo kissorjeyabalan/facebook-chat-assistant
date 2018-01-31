@@ -1,12 +1,13 @@
 import { MessageEvent } from 'facebook-chat-api';
 import * as glob from 'glob';
 import { Configuration } from '../../config/Configuration';
+import { Global } from '../../Global';
 import EasterEgg from '../EasterEgg';
 import Handler from '../Handler';
 
 export default class EasterEggHandler extends Handler {
 
-    private eggs: Map<string, EasterEgg>;
+    private eggs: Map<RegExp, EasterEgg>;
 
     private constructor() {
         super();
@@ -27,15 +28,19 @@ export default class EasterEggHandler extends Handler {
         })
         .map(e => {
             const instance: EasterEgg = new e();
-            this.eggs.set(instance.getEgg(), instance);
-            console.info(`Easter egg ${e.constructor.name} has been enabled.`);
+            this.eggs.set(instance.getRegex(), instance);
+            console.info(`Easter egg ${e.prototype.constructor.name} has been enabled.`);
         });
     }
 
     public async handle(message: MessageEvent): Promise<any> {
         for (const [regex, egg] of this.eggs) {
-            if (message.body.match(regex)) {
-                egg.handleEgg(message);
+            if (regex.test(message.body)) {
+                const api = Global.getInstance().getApi();
+                setTimeout(() => api.markAsRead(message.threadID), 333);
+                const endTyping = api.sendTypingIndicator(message.threadID);
+                await egg.handleEgg(message);
+                endTyping();
                 break;
             }
         }

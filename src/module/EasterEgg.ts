@@ -1,13 +1,13 @@
 import { MessageEvent } from 'facebook-chat-api';
 
 export default class EasterEgg {
-    private regex: string;
+    protected regex: RegExp;
 
     public handleEgg(message: MessageEvent): Promise<any> {
         return Promise.resolve();
     }
 
-    public getEgg(): string {
+    public getRegex(): RegExp {
         return this.regex;
     }
 }
