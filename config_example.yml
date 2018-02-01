@@ -1,22 +1,26 @@
 mongoose:
   host: localhost
   port: 27017
-  database: bot
+  database: chatbot
 
 account:
   username: EMAIL/PHONE
   password: PASSWORD
-  state: /data/bot/state.json
+  state: /data/chatbot/state.json
 
 bot:
-  trigger: run
+  trigger: "run"
   name:
-    full: Nickname
-    nick: Nick
-  id:
-    - 13434343434343
+    full: Full Bot Name
+    nick: Bot
+  id: 000000000000000
   admin:
-    - 12039481234433
+    - 000000000000000
+
+handlers:
+  - MessageStoreHandler
+  - CommandHandler
+  - EasterEggHandler
 
 login:
   logLevel: warn
@@ -27,4 +31,11 @@ login:
   forceLogin: false
   timeout: 30
 
-  
+commands:
+  ChangeEmoji:
+    enabled: true
+
+eggs:
+  - SuicidePrevention
+
+    
