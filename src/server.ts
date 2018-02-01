@@ -40,9 +40,13 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
                 process.exit();
         }
     }
+
     fs.writeFileSync(config.fetch('account.state'), JSON.stringify(api.getAppState()));
     Global.getInstance().setApi(api);
+
     api.listen((error: chat.Error, message: chat.MessageEvent) => {
-        mp.handle(message);
+        if (message.senderID != config.fetch('bot.id')) {
+            mp.handle(message);
+        }
     });
 });
