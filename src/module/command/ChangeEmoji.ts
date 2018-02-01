@@ -4,7 +4,7 @@ import Command from '../Command';
 import { HelpDetails } from '../HelpDetails';
 
 export default class ChangeEmoji extends Command {
-    public help: HelpDetails = new HelpDetails('Change Emoji', 'emoji', 'Change thread emoji',
+    public help: HelpDetails = new HelpDetails('Change Emoji', 'emoji', 'Change emoji',
     'Changes the thread emoji to any emoji.\n\nNote: Not all emoji plays nice with the UI.',
     'emoji <emoji>', 'emoji \u{1f60f}', false, false);
 
@@ -21,7 +21,7 @@ export default class ChangeEmoji extends Command {
                 console.error(err);
                 api.sendMessage(`I wasn't able to change the emoji :(`, msg.threadID);
             } else {
-                api.sendMessage(`I set the emoji to ${emoji} as you requested :)`, msg.threadID);
+                api.sendMessage(`I set the emoji to ${emoji} as you requested.`, msg.threadID);
             }
         });
 
