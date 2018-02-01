@@ -66,6 +66,11 @@
         "interface-name": false,
         "no-empty": false,
         "no-suspicious-comment": false,
-        "no-multiline-string": false
+        "no-multiline-string": false,
+        "max-line-length": false,
+        "no-shadowed-variable": false,
+        "no-object-literal-type-assertion": false,
+        "no-for-in": false,
+        "triple-equals": false
     }
   }

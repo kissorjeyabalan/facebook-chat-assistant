@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { MongooseMap } from 'mongoose-map';
 
 interface IGroupInfo {
     threadID: string;
@@ -11,7 +10,9 @@ interface IGroupInfo {
     names: {[key: string]: string};
     aliases?: {[key: string]: string};
     newChat: boolean;
-    lastMessage: string;
+    lastMessage?: string;
+    isGroup: boolean;
+    userRegExp: string;
 }
 
 interface GroupInfoModel extends IGroupInfo, mongoose.Document {}
@@ -26,8 +27,10 @@ const groupInfoSchema = new mongoose.Schema({
     names: {type: [mongoose.Schema.Types.Mixed], required: true},
     aliases: {type: [mongoose.Schema.Types.Mixed], required: false},
     newChat: {type: Boolean, required: true},
-    lastMessage: {type: String, required: true},
-});
+    lastMessage: {type: String, required: false},
+    isGroup: {type: Boolean, required: true},
+    userRegExp: {type: String, required: true},
+}, {versionKey: false});
 
 const GroupInfo = mongoose.model<GroupInfoModel>('GroupInfo', groupInfoSchema);
 

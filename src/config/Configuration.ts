@@ -49,4 +49,16 @@ export class Configuration {
         return this.fetch(`commands.${cmd}.enabled`);
     }
 
+    public getRegexFromMembers(names: string[]): string {
+        let regstr = '(';
+
+        for (const name of names) {
+            regstr += name;
+            regstr += '|';
+        }
+        regstr += 'me)';
+
+        return regstr;
+    }
+
 }
