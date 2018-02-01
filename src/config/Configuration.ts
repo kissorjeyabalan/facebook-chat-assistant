@@ -46,7 +46,11 @@ export class Configuration {
     }
 
     public isCmdEnabled(cmd: string): boolean {
-        return this.fetch(`commands.${cmd}.enabled`);
+        try {
+            return this.fetch(`commands.${cmd}.enabled`);
+        } catch {
+            return true;
+        }
     }
 
     public getRegexFromMembers(names: string[]): string {
