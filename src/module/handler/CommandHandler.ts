@@ -65,7 +65,11 @@ export default class CommandHandler extends Handler {
             return message;
         } else {
             const endTyping = api.sendTypingIndicator(message.threadID);
-            await cmdInstance.run(message, args).catch(err => console.warn(err));
+            try {
+                await cmdInstance.run(message, args);
+            } catch (err) {
+                console.log(err);
+            }
             endTyping();
 
             return message;
