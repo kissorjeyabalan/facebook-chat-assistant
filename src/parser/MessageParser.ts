@@ -16,7 +16,11 @@ export class MessageParser {
             .filter(e => {
                 const handler = e.prototype.constructor.name;
                 if (handlers.indexOf(handler) === -1) {
-                    console.info(`Handler ${handler} is disabled.`);
+                    if (handler === 'ScheduleHandler') {
+                        console.info(`Handler ${handler} is disabled. (Intended behaviour)`);
+                    } else {
+                        console.info(`Handler ${handler} is disabled.`);
+                    }
 
                     return false;
                 }
