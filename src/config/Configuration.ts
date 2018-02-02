@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as yml from 'js-yaml';
+import * as dash from 'lodash';
 
 export class Configuration {
     private static instance: Configuration = new Configuration();
@@ -12,8 +13,10 @@ export class Configuration {
         if (Configuration.instance) {
             throw Error('Configuration is already initialized.');
         }
-        //this.configPath = path;
-        this.config = yml.safeLoad(fs.readFileSync(path, 'utf-8'));
+
+        const config = yml.safeLoad(fs.readFileSync(path, 'utf-8'));
+        this.configPath = path;
+        this.config = config;
         Configuration.instance = this;
     }
 
@@ -23,32 +26,40 @@ export class Configuration {
     }
 
     public has(prop: string): boolean {
-        const split = prop.split('.');
-        let thing = this.config;
-        try {
-            for (const e of split) {
-                thing = thing[e];
-            }
-        } catch {
-            return false;
-        }
-
-        return true;
+        return dash.has(this.config, prop);
     }
 
     // tslint:disable-next-line:no-any
     public fetch(prop: string): any {
         if (this.has(prop)) {
-            const split = prop.split('.');
-            let thing = this.config;
-            for (const e of split) {
-                thing = thing[e];
-            }
-
-            return thing;
+            return dash.get(this.config, prop);
         } else {
             throw new Error(`Property ${prop} was not found in ${this.configPath}`);
         }
+    }
+
+    public remove(prop: string) {
+        const success: boolean = dash.unset(this.config, prop);
+        if (success) {
+            const temp = yml.safeDump(this.config);
+            fs.writeFileSync(this.configPath, temp, 'utf-8');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public add(prop: string, value: any) {
+        const success: boolean = dash.set(this.config, prop, value);
+        if (success) {
+            const temp = yml.safeDump(this.config);
+            fs.writeFileSync(this.configPath, temp, 'utf-8');
+
+            return true;
+        }
+
+        return false;
     }
 
     public hasAppState(): boolean {
@@ -78,7 +89,5 @@ export class Configuration {
 
         return regstr;
     }
-
-
 
 }
