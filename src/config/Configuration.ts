@@ -1,4 +1,3 @@
-import * as brototype from 'brototype';
 import * as fs from 'fs';
 import * as yml from 'js-yaml';
 
@@ -7,15 +6,14 @@ export class Configuration {
 
     private configPath: string;
     // tslint:disable-next-line:no-any
-    private bro: any;
+    private config: any;
 
     constructor(path: string = './config.yml') {
         if (Configuration.instance) {
             throw Error('Configuration is already initialized.');
         }
         //this.configPath = path;
-        const config = yml.safeLoad(fs.readFileSync(path, 'utf-8'));
-        this.bro = brototype(config);
+        this.config = yml.safeLoad(fs.readFileSync(path, 'utf-8'));
         Configuration.instance = this;
     }
 
@@ -25,13 +23,29 @@ export class Configuration {
     }
 
     public has(prop: string): boolean {
-        return this.bro.doYouEven(prop);
+        const split = prop.split('.');
+        let thing = this.config;
+        try {
+            for (const e of split) {
+                thing = thing[e];
+            }
+        } catch {
+            return false;
+        }
+
+        return true;
     }
 
     // tslint:disable-next-line:no-any
     public fetch(prop: string): any {
         if (this.has(prop)) {
-            return this.bro.iCanHaz(prop);
+            const split = prop.split('.');
+            let thing = this.config;
+            for (const e of split) {
+                thing = thing[e];
+            }
+
+            return thing;
         } else {
             throw new Error(`Property ${prop} was not found in ${this.configPath}`);
         }
@@ -64,5 +78,7 @@ export class Configuration {
 
         return regstr;
     }
+
+
 
 }
