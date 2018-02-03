@@ -56,5 +56,4 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
             mp.handle(message);
         }
     });
-
 });
