@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as yml from 'js-yaml';
-import * as dash from 'lodash';
+import * as _ from 'lodash';
 
 export class Configuration {
     private static instance: Configuration = new Configuration();
@@ -26,20 +26,20 @@ export class Configuration {
     }
 
     public has(prop: string): boolean {
-        return dash.has(this.config, prop);
+        return _.has(this.config, prop);
     }
 
     // tslint:disable-next-line:no-any
     public fetch(prop: string): any {
         if (this.has(prop)) {
-            return dash.get(this.config, prop);
+            return _.get(this.config, prop);
         } else {
             throw new Error(`Property ${prop} was not found in ${this.configPath}`);
         }
     }
 
     public remove(prop: string) {
-        const success: boolean = dash.unset(this.config, prop);
+        const success: boolean = _.unset(this.config, prop);
         if (success) {
             const temp = yml.safeDump(this.config);
             fs.writeFileSync(this.configPath, temp, 'utf-8');
@@ -51,7 +51,7 @@ export class Configuration {
     }
 
     public add(prop: string, value: any) {
-        const success: boolean = dash.set(this.config, prop, value);
+        const success: boolean = _.set(this.config, prop, value);
         if (success) {
             const temp = yml.safeDump(this.config);
             fs.writeFileSync(this.configPath, temp, 'utf-8');
