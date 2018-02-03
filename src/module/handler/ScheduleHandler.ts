@@ -6,7 +6,7 @@ import Schedule from '../Schedule';
 
 export default class ScheduleHandler extends Handler {
     private api: fb.Api;
-    private cronInstances: Schedule[];
+    private cronInstances: any;
 
     public constructor() {
         super();
@@ -16,9 +16,9 @@ export default class ScheduleHandler extends Handler {
             .map(cbfn => require(cbfn).default)
             .filter(e => e.prototype instanceof Schedule)
             .filter(e => {
-                const name = e.prototype.constructor.name;
-                if (enabledCrons.indexOf(name) === 1) {
-                    console.info(`Cronjob ${name} is disabled.`);
+                const scheduleName = e.prototype.constructor.name;
+                if (enabledCrons.indexOf(scheduleName) === -1) {
+                    console.info(`Handler ${scheduleName} is disabled.`);
 
                     return false;
                 }
@@ -26,13 +26,13 @@ export default class ScheduleHandler extends Handler {
                 return true;
             })
             .map(e => {
-                const cron = new e();
-                console.info(`Cronjob ${name} enabled.`);
+                const temp = new e();
+                console.info(`Cronjob ${temp.constructor.name} has been enabled.`);
 
-                return cron;
+                return temp;
             });
 
-            this.cronInstances = enabledCrons.map(name => cronJobs.find(i => i.prototype.constructor.name));
+            this.cronInstances = enabledCrons.map(name => cronJobs.find(i => i.constructor.name === name));
     }
 
     public start(): void {

@@ -1,3 +1,4 @@
+import { Promise } from 'bluebird';
 import { MessageEvent } from 'facebook-chat-api';
 import * as glob from 'glob';
 import { Configuration } from '../../config/Configuration';
@@ -33,15 +34,15 @@ export default class EasterEggHandler extends Handler {
         });
     }
 
-    public async handle(message: MessageEvent): Promise<any> {
+    public handle(message: MessageEvent): any {
         for (const [regex, egg] of this.eggs) {
             if (regex.test(message.body)) {
                 const api = Global.getInstance().getApi();
                 setTimeout(() => api.markAsRead(message.threadID), 333);
                 const endTyping = api.sendTypingIndicator(message.threadID);
-                await egg.handleEgg(message);
-                endTyping();
-                break;
+                new Promise(resolve => resolve(egg.handleEgg(message)))
+                    .catch(err => console.error(err))
+                    .finally(endTyping());
             }
         }
     }

@@ -1,6 +1,9 @@
-import { Api, MessageEvent } from 'facebook-chat-api';
+import { Promise } from 'bluebird';
+import { Api, Error, MessageEvent, UserInfo } from 'facebook-chat-api';
 import * as glob from 'glob';
+import * as _ from 'lodash';
 import { Configuration } from '../../config/Configuration';
+import { UserHelper } from '../../db/helper/UserHelper';
 import { Global } from '../../Global';
 import Command from '../Command';
 import Handler from '../Handler';
@@ -9,6 +12,7 @@ import { HelpDetails } from '../HelpDetails';
 export default class CommandHandler extends Handler {
     private trigger: string;
     private commandInstances: Map<string, Command>;
+    private uh: UserHelper = UserHelper.getInstance();
 
     private constructor() {
         super();
@@ -34,8 +38,9 @@ export default class CommandHandler extends Handler {
         });
     }
 
-    public async handle(message: MessageEvent): Promise<any> {
-        const api = Global.getInstance().getApi();
+    public handle(message: MessageEvent): any {
+        const global = Global.getInstance();
+        const api = global.getApi();
 
         if (!this.isCmd(message)) {
             return message;
@@ -53,6 +58,16 @@ export default class CommandHandler extends Handler {
         }
 
         const cmdInstance = this.commandInstances.get(cmd);
+        if (cmdInstance.getHelp().isAdminOnly()) {
+            if (!_.includes(Configuration.getInstance().fetch('bot.admin'), Number(message.senderID))) {
+                this.uh.getFirstName(message.senderID, (err: Error, data: UserInfo) => {
+                    api.sendMessage(`${data.firstName} is not in the sudoers file. This incident will be reported.`, message.threadID);
+                });
+
+                return message;
+            }
+        }
+
         if (cmdInstance === undefined) {
             console.log(`Module for ${cmd} does not exist. Ignoring request.`);
 
@@ -65,12 +80,10 @@ export default class CommandHandler extends Handler {
             return message;
         } else {
             const endTyping = api.sendTypingIndicator(message.threadID);
-            try {
-                await cmdInstance.run(message, args);
-            } catch (err) {
-                console.log(err);
-            }
-            endTyping();
+
+            new Promise(resolve => resolve(cmdInstance.run(message, args)))
+                .catch(err => console.error(err))
+                .finally(endTyping());
 
             return message;
         }
@@ -85,7 +98,7 @@ export default class CommandHandler extends Handler {
     }
 
     private getCmdArgs(message: MessageEvent) {
-        return message.body.substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim().toLowerCase();
+        return message.body.substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim();
     }
 
     private printHelp(cmd?: string) {
