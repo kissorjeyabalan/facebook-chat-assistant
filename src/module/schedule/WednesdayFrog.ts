@@ -14,7 +14,7 @@ export default class WednesdayFrog extends Schedule {
         const iu: ImageUtil = ImageUtil.getInstance();
         const config: Configuration = Configuration.getInstance();
 
-        const cron = ns.scheduleJob('* * * * *', (fireDate) => {
+        const cron = ns.scheduleJob('6 12 * * 3', (fireDate) => {
             const api: fb.Api = Global.getInstance().getApi();
 
             r.getRandomSubmission('ItIsWednesday', (post) => {
