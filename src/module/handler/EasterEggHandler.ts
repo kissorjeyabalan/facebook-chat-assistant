@@ -39,10 +39,8 @@ export default class EasterEggHandler extends Handler {
             if (regex.test(message.body)) {
                 const api = Global.getInstance().getApi();
                 setTimeout(() => api.markAsRead(message.threadID), 333);
-                const endTyping = api.sendTypingIndicator(message.threadID);
                 new Promise(resolve => resolve(egg.handleEgg(message)))
-                    .catch(err => console.error(err))
-                    .finally(endTyping());
+                    .catch(err => console.error(err));
             }
         }
     }
