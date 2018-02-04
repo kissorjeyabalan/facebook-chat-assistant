@@ -36,7 +36,5 @@ export default class WednesdayFrog extends Schedule {
                 });
             });
         });
-
-        cron.invoke();
     }
 }
