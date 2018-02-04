@@ -27,6 +27,10 @@ export class Reddit {
         return Reddit.instance;
     }
 
+    public getSnoo(): snoowrap {
+        return this.r;
+    }
+
     public getRandomSubmission(subreddit: string, callback?: (post: any) => void): Promise<any> {
         return this.r.getRandomSubmission(subreddit).then(post => {
             if (callback) {
