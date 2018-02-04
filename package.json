@@ -39,6 +39,7 @@
     "bluebird": "^3.5.1",
     "facebook-chat-api": "github:Schmavery/facebook-chat-api",
     "glob": "^7.1.2",
+    "impurge": "^0.9.1",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.1",
