@@ -1,2 +1,13 @@
-node_modules
+.gitignore
 npm-debug.log
+config_example.yml
+README.me
+run.sh
+stop.sh
+build.sh
+tslint.json
+
+node_modules/
+build/
+data/
+.git/

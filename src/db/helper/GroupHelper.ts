@@ -42,7 +42,7 @@ export class GroupHelper {
                 newThread = true;
                 const msg = `Hello, earthlings! My name is ${this.config.fetch('bot.name.full')}, ` +
                             `but you can call me ${this.config.fetch('bot.name.nick')}.` +
-                            `\n\nPlease give me a few seconds so I can collect some information` +
+                            `\n\nPlease give me a few seconds so I can collect some information ` +
                             `about this chat before you use any commands.`;
                 api.sendMessage(msg, message.threadID);
             }

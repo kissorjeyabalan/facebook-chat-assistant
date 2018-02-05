@@ -58,6 +58,13 @@ export default class CommandHandler extends Handler {
         }
 
         const cmdInstance = this.commandInstances.get(cmd);
+
+        if (cmdInstance === undefined) {
+            console.log(`Module for ${cmd} does not exist. Ignoring request.`);
+
+            return message;
+        }
+
         if (cmdInstance.getHelp().isAdminOnly()) {
             if (!_.includes(Configuration.getInstance().fetch('bot.admin'), Number(message.senderID))) {
                 this.uh.getFirstName(message.senderID, (err: Error, data: UserInfo) => {
@@ -66,12 +73,6 @@ export default class CommandHandler extends Handler {
 
                 return message;
             }
-        }
-
-        if (cmdInstance === undefined) {
-            console.log(`Module for ${cmd} does not exist. Ignoring request.`);
-
-            return message;
         }
 
         if (!cmdInstance.isValid(args)) {
