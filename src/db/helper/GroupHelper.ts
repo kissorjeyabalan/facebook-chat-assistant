@@ -27,6 +27,7 @@ export class GroupHelper {
             if (err) {
                 callback(new Error('Query Error'), undefined);
             } else if (obj !== null) {
+                console.log('found a group');
                 callback(undefined, obj);
             } else {
                 callback(undefined, undefined);
@@ -35,10 +36,13 @@ export class GroupHelper {
     }
 
     public updateGroupInfo(message: fb.MessageEvent, callback?: (err: fb.Error, thread?: gi.IGroupInfo) => void) {
+        console.log('attempting to update group info');
         this.getGroupInfo(message.threadID, (err: Error, info: gi.IGroupInfo) => {
             const api = Global.getInstance().getApi();
             let newThread = false;
+            console.log('getting group');
             if (!info) {
+                console.log('group is new');
                 newThread = true;
                 const msg = `Hello, earthlings! My name is ${this.config.fetch('bot.name.full')}, ` +
                             `but you can call me ${this.config.fetch('bot.name.nick')}.` +
