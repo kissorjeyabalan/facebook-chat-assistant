@@ -1,7 +1,7 @@
 version: '2'
 services:
   chatbot:
-    image: kij/emol
+    build: .
     depends_on:
       - mongo
     links:
