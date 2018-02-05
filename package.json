@@ -61,6 +61,7 @@
     "test": "npm run test-only",
     "test-only": "jest --coverage",
     "test:watch": "jest --watch",
-    "start": "node build/src/server.js"
+    "start": "node build/src/server.js",
+    "cleanrun": "rm -rf build && tsc -p tsconfig.release.json && npm run start"
   }
 }
