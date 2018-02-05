@@ -7,4 +7,4 @@ WORKDIR /data/app
 VOLUME /data/app
 WORKDIR /app
 RUN npm run build
-CMD ["npm", "start"]
+CMD ["node", "build/src/server.js"]
