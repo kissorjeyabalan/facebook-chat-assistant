@@ -23,7 +23,7 @@ export default class DankMeme extends EasterEgg {
             this.r.getTop('dankmemes', {time: 'day', limit: 50}).then(posts => {
                 for (const post of posts) {
                     if (this.isImageUri(post.url) || ip.is_imgur(post.url)) {
-                        let item = {title: post.title, url: post.url};
+                        const item = {title: post.title, url: post.url};
                         if (ip.is_imgur(post.url)) {
                             ip.purge(post.url, (err, res) => {
                                 if (!err) {

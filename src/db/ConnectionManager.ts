@@ -1,3 +1,4 @@
+import { Promise } from 'bluebird';
 import * as mongoose from 'mongoose';
 import { Configuration } from '../config/Configuration';
 
@@ -23,7 +24,7 @@ export class ConnectionManager {
             const host: string = this.config.fetch('mongoose.host');
             const port: string = this.config.fetch('mongoose.port');
             const database: string = this.config.fetch('mongoose.database');
-            mongoose.connect(`mongodb://${host}:${port}/${database}`, { useMongoClient: true });
+            mongoose.connect(`mongodb://${host}:${port}/${database}`, { useMongoClient: true, promiseLibrary: Promise });
             this.connection = mongoose.connection;
         }
     }
