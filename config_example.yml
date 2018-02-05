@@ -1,27 +1,19 @@
 mongoose:
   host: localhost
   port: 27017
-  database: chatbot
-
+  database: bot
 account:
-  username: EMAIL/PHONE
-  password: PASSWORD
-  state: /data/chatbot/state.json
-
+  username: email
+  password: password
+  state: /data/app/state.json
 bot:
-  trigger: "run"
+  trigger: run
   name:
-    full: Full Bot Name
-    nick: Bot
-  id: 000000000000000
+    full: Firstname Middlename Surname
+    nick: First
+  id: 0000000000
   admin:
-    - 000000000000000
-
-handlers:
-  - MessageStoreHandler
-  - CommandHandler
-  - EasterEggHandler
-
+    - 0000000000
 login:
   logLevel: warn
   selfListen: false
@@ -30,12 +22,21 @@ login:
   updatePresence: false
   forceLogin: false
   timeout: 30
-
+reddit:
+  client: client
+  secret: secret
+  username: username
+  password: password
+handlers:
+  - MessageStoreHandler
+  - CommandHandler
+  - EasterEggHandler
 commands:
-  ChangeEmoji:
+  TestCommand:
     enabled: true
-
 eggs:
-  - SuicidePrevention
-
-    
+  - Ping
+  - DankMeme
+crons:
+  - WednesdayFrog
+cronsubs: []
