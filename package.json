@@ -27,7 +27,7 @@
     "@types/mongoose": "^4.7.33",
     "@types/node": "^9.3.0",
     "@types/request": "^2.47.0",
-    "@types/request-promise-native": "^1.0.13",
+    "@types/node-schedule": "^1.2.2",
     "rimraf": "~2.6.2",
     "tslint": "~5.9.1",
     "tslint-microsoft-contrib": "~5.0.2",
@@ -35,11 +35,10 @@
     "typescript": "~2.6.2"
   },
   "dependencies": {
-    "@types/node-schedule": "^1.2.2",
     "bluebird": "^3.5.1",
     "facebook-chat-api": "github:Schmavery/facebook-chat-api",
     "glob": "^7.1.2",
-    "impurge": "^0.9.1",
+    "impurge": "github:kissorjeyabalan/impurge",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.1",
@@ -47,9 +46,7 @@
     "node-schedule": "^1.3.0",
     "pkginfo": "^0.4.1",
     "request": "^2.83.0",
-    "request-promise-native": "^1.0.5",
     "snoowrap": "^1.15.2",
-    "streamifier": "^0.1.1",
     "tslib": "~1.8.1"
   },
   "scripts": {
