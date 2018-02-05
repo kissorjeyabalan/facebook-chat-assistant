@@ -4,7 +4,7 @@ import { Global } from '../../Global';
 import EasterEgg from '../EasterEgg';
 
 export default class SuicidePrevention extends EasterEgg {
-    protected regex: RegExp = /(^(?=.*\bfeeling\b)(?=.*\bsuicidal\b).*$)|((?=.*\bkill(ing?)\b)(?=.*\bmyself\b).*$)/i;
+    protected regex: RegExp = /(^(?=.*\bfeeling\b)(?=.*\bsuicidal\b).*$)|((?=.*\bkill((ing)?)\b)(?=.*\bmyself\b).*$)/i;
 
     public handleEgg(msg: MessageEvent): any {
         const api = Global.getInstance().getApi();
