@@ -1,14 +1,14 @@
 import { Promise } from 'bluebird';
-import {  MessageEvent, AttachmentMessage, MessageInfo } from 'facebook-chat-api';
+import {  AttachmentMessage, MessageEvent, MessageInfo } from 'facebook-chat-api';
 import * as fs from 'fs';
 import * as ip from 'impurge';
+import * as _ from 'lodash';
 import * as snoowrap from 'snoowrap';
 import { Global } from '../../Global';
 import { ImageUtil } from '../../util/ImageUtil';
 import { Reddit } from '../../util/Reddit';
 import Command from '../Command';
 import { HelpDetails } from '../HelpDetails';
-import * as _ from 'lodash';
 
 export default class RedditSubmission extends Command {
     public help: HelpDetails = new HelpDetails('Random Reddit Submission', 'reddit', 'Get random submission',
@@ -29,7 +29,7 @@ export default class RedditSubmission extends Command {
         const api = Global.getInstance().getApi();
 
         this.r.getHot(sub, {limit: 25}).then(posts => {
-            let items: any =  [];
+            const items: any =  [];
             for (const post of posts) {
                 if (post.url.endsWith('gifv')) {
                     let newName = post.url;
@@ -37,7 +37,6 @@ export default class RedditSubmission extends Command {
                     newName = `${newName}mp4`;
                     post.url = newName;
                 }
-                console.log("NEW URL: " + post.url);
                 if (this.iu.isImageUri(post) || ip.is_imgur(post.url)) {
                     const item = {title: post.title, url: post.url};
                     if (ip.is_imgur(post.url)) {
