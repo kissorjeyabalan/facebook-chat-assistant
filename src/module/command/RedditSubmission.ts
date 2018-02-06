@@ -26,7 +26,6 @@ export default class RedditSubmission extends Command {
     }
 
     public run(msg: MessageEvent, sub: string): any {
-        const api = Global.getInstance().getApi();
 
         if (this.submissions.get(sub) === undefined) {
             this.submissions.set(sub, []);
@@ -56,15 +55,17 @@ export default class RedditSubmission extends Command {
                         }
                     }
                 }
-            }).finally(this.sendItem(msg, _.sample(this.submissions.get(sub))));
+            }).finally(this.sendItem(msg, sub, _.sample(this.submissions.get(sub))));
         } else {
-            this.sendItem(msg, _.sample(this.submissions.get(sub)));
+            this.sendItem(msg, sub, _.sample(this.submissions.get(sub)));
         }
 
         return Promise.resolve(msg);
     }
 
-    private sendItem(msg: MessageEvent, item: any) {
+    private sendItem(msg: MessageEvent, sub: string, item: any) {
+        const api = Global.getInstance().getApi();
+
         if (item.hasOwnProperty('url')) {
             this.iu.saveImageFromUrl(item.url, 'temp', (err: Error, path: string) => {
                 if (!err) {
