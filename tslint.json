@@ -71,6 +71,7 @@
         "no-shadowed-variable": false,
         "no-object-literal-type-assertion": false,
         "no-for-in": false,
-        "triple-equals": false
+        "triple-equals": false,
+        "underscore-consistent-invocation": false
     }
   }

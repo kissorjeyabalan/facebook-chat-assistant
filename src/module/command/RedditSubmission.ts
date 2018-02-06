@@ -1,5 +1,5 @@
 import { Promise } from 'bluebird';
-import { MessageEvent, AttachmentMessage, MessageInfo } from 'facebook-chat-api';
+import {  MessageEvent, AttachmentMessage, MessageInfo } from 'facebook-chat-api';
 import * as fs from 'fs';
 import * as ip from 'impurge';
 import * as snoowrap from 'snoowrap';
@@ -56,12 +56,15 @@ export default class RedditSubmission extends Command {
                         }
                     }
                 }
-            }).then(this.run(msg, sub));
+            }).finally(this.sendItem(msg, _.sample(this.submissions.get(sub))));
+        } else {
+            this.sendItem(msg, _.sample(this.submissions.get(sub)));
         }
 
-        // tslint:disable-next-line:underscore-consistent-invocation
-        const item = _.sample(this.submissions.get(sub));
+        return Promise.resolve(msg);
+    }
 
+    private sendItem(msg: MessageEvent, item: any) {
         if (item.hasOwnProperty('url')) {
             this.iu.saveImageFromUrl(item.url, 'temp', (err: Error, path: string) => {
                 if (!err) {
@@ -86,8 +89,6 @@ export default class RedditSubmission extends Command {
             _.pull(arr, item);
             this.submissions.set(sub, arr);
         }
-
-        return Promise.resolve(msg);
     }
 
 }
