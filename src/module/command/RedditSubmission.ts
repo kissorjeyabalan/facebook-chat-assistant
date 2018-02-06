@@ -55,9 +55,11 @@ export default class RedditSubmission extends Command {
                         }
                     }
                 }
-            }).finally(this.sendItem(msg, sub, _.sample(this.submissions.get(sub))));
+            }).then(this.run(msg, sub));
         } else {
-            this.sendItem(msg, sub, _.sample(this.submissions.get(sub)));
+            const item = _.sample(this.submissions.get(sub));
+            console.log(item);
+            this.sendItem(msg, sub, item);
         }
 
         return Promise.resolve(msg);
