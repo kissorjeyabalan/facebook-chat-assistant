@@ -31,15 +31,15 @@ export default class RedditSubmission extends Command {
         this.r.getHot(sub, {limit: 25}).then(posts => {
             let items: any =  [];
             for (const post of posts) {
-                if (post.url.endsWith('gifv')) {
-                    let newName = post.url;
-                    newName = post.url.slice(0, -4);
-                    newName = `${newName}.jpg`;
-                    post.url = newName;
-                }
                 if (this.iu.isImageUri(post) || ip.is_imgur(post.url)) {
                     const item = {title: post.title, url: post.url};
                     if (ip.is_imgur(post.url)) {
+                        if (post.url.endsWith('gifv')) {
+                            let newName = post.url;
+                            newName = post.url.slice(0, -4);
+                            newName = `${newName}.jpg`;
+                            post.url = newName;
+                        }
                         ip.purge(post.url, (err, res) => {
                             if (!err) {
                                 item.url = res[0];
