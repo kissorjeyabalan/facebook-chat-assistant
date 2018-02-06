@@ -36,7 +36,7 @@ export default class RedditSubmission extends Command {
                 for (const post of posts) {
                     if (this.iu.isImageUri(post) || ip.is_imgur(post.url)) {
                         const item = {title: post.title, url: post.url};
-                        if (ip.is_imgur) {
+                        if (ip.is_imgur(post.url)) {
                             ip.purge(post.url, (err, res) => {
                                 if (!err) {
                                     item.url = res[0];
