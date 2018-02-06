@@ -14,7 +14,7 @@ export default class RedditSubmission extends Command {
     public help: HelpDetails = new HelpDetails('Random Reddit Submission', 'reddit', 'Get random submission',
     'Gets a random image or text submission from the specified subreddit.',
     'reddit <subreddit>', 'reddit meirl', false, false);
-    private submissions: Map<string, any>;
+    private submissions: Map<string, any> = new Map();
     private iu: ImageUtil = ImageUtil.getInstance();
     private r: snoowrap = Reddit.getInstance().getSnoo();
     private dirRoot: string = `${__dirname}/../..`;
