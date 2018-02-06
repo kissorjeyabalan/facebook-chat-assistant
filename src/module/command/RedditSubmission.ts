@@ -42,7 +42,11 @@ export default class RedditSubmission extends Command {
                     if (ip.is_imgur(post.url)) {
                         ip.purge(post.url, (err, res) => {
                             if (!err) {
-                                item.url = res[0];
+                                if (res[0].endsWith('.png') || res[0].endsWith('jpg') || res[0].endsWith('mp4') || res[0].endsWith('jpeg') || res[0].endsWith('gif')) {
+                                    item.url = res[0];
+                                } else {
+                                    item.url = `${res[0]}.jpg`;
+                                }
                             }
                         });
                     }
@@ -58,7 +62,6 @@ export default class RedditSubmission extends Command {
 
             return items;
         }).then(items => {
-            console.log(items);
             const randItem = _.sample(items);
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
