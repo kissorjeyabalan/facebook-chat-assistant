@@ -55,7 +55,7 @@ export default class RedditSubmission extends Command {
                         }
                     }
                 }
-            }).then(this.run(msg, sub));
+            }).finally(this.run(msg, sub));
         } else {
             const item = _.sample(this.submissions.get(sub));
             console.log(item);
