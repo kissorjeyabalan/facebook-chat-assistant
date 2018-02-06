@@ -6,7 +6,7 @@ import { Configuration } from '../config/Configuration';
 
 export class ImageUtil {
     private static instance: ImageUtil = new ImageUtil();
-    private imgTypes: string[] = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    private imgTypes: string[] = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4'];
     private dirRoot: string = `${__dirname}/..`;
     private pkginfo: any = require('pkginfo')(module);
 
