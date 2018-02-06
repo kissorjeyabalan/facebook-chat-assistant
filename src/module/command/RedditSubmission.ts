@@ -58,6 +58,7 @@ export default class RedditSubmission extends Command {
 
             return items;
         }).then(items => {
+            console.log(items);
             const randItem = _.sample(items);
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
