@@ -18,7 +18,7 @@ export default class DankMeme extends EasterEgg {
         const api = Global.getInstance().getApi();
 
         if (this.links.length === 0) {
-            this.r.getTop('dankmemes', {time: 'all', limit: 100}).then(posts => {
+            this.r.getTop('shittyseduction', {time: 'all', limit: 100}).then(posts => {
                 for (const post of posts) {
                     const item = {title: post.title, text: post.selftext};
                     this.links.push(item);
