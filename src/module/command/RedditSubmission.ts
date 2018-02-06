@@ -1,5 +1,5 @@
 import { Promise } from 'bluebird';
-import { Error, MessageEvent, AttachmentMessage, MessageInfo } from 'facebook-chat-api';
+import { MessageEvent, AttachmentMessage, MessageInfo } from 'facebook-chat-api';
 import * as fs from 'fs';
 import * as ip from 'impurge';
 import * as snoowrap from 'snoowrap';
