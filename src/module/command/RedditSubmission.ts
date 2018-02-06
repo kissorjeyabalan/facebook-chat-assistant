@@ -26,72 +26,53 @@ export default class RedditSubmission extends Command {
     }
 
     public run(msg: MessageEvent, sub: string): any {
-
-        if (this.submissions.get(sub) === undefined) {
-            this.submissions.set(sub, []);
-        }
-
-        if (this.submissions.get(sub).length === 0) {
-            this.r.getHot(sub, {limit: 25}).then(posts => {
-                for (const post of posts) {
-                    if (this.iu.isImageUri(post) || ip.is_imgur(post.url)) {
-                        const item = {title: post.title, url: post.url};
-                        if (ip.is_imgur(post.url)) {
-                            ip.purge(post.url, (err, res) => {
-                                if (!err) {
-                                    item.url = res[0];
-                                }
-                            });
-                        }
-                        const arr = this.submissions.get(sub);
-                        arr.push(item);
-                        this.submissions.set(sub, arr);
-                    } else {
-                        if (post.is_self) {
-                            const item = {title: post.title, text: post.selftext};
-                            const arr = this.submissions.get(sub);
-                            arr.push(item);
-                            this.submissions.set(sub, arr);
-                        }
-                    }
-                }
-            }).finally(this.run(msg, sub));
-        } else {
-            const item = _.sample(this.submissions.get(sub));
-            console.log(item);
-            this.sendItem(msg, sub, item);
-        }
-
-        return Promise.resolve(msg);
-    }
-
-    private sendItem(msg: MessageEvent, sub: string, item: any) {
         const api = Global.getInstance().getApi();
 
-        if (item.hasOwnProperty('url')) {
-            this.iu.saveImageFromUrl(item.url, 'temp', (err: Error, path: string) => {
-                if (!err) {
-                    const imgMessage: AttachmentMessage = {
-                        body: item.title,
-                        attachment: fs.createReadStream(`${this.dirRoot}/media/${path}`),
-                    };
-                    api.sendMessage(imgMessage, msg.threadID, (err: any, mi: MessageInfo) => {
-                        this.iu.deleteImageFromPath(path);
-                        const arr = this.submissions.get(sub);
-                        _.pull(arr, item);
-                        this.submissions.set(sub, arr);
-                    });
+        this.r.getHot(sub, {limit: 25}).then(posts => {
+            let items: any =  [];
+            for (const post of posts) {
+                if (this.iu.isImageUri(post) || ip.is_imgur(post.url)) {
+                    const item = {title: post.title, url: post.url};
+                    if (ip.is_imgur(post.url)) {
+                        ip.purge(post.url, (err, res) => {
+                            if (!err) {
+                                item.url = res[0];
+                            }
+                        });
+                    }
+                    items.push(item);
                 } else {
-                    this.run(msg, sub);
+                    if (post.is_self) {
+                        const item = {title: post.title, text: post.selftext};
+                        items.push(item);
+                    }
                 }
-            });
-        } else {
-            api.sendMessage(item.title, msg.threadID);
-            api.sendMessage(item.selftext, msg.threadID);
-            const arr = this.submissions.get(sub);
-            _.pull(arr, item);
-            this.submissions.set(sub, arr);
-        }
+            }
+
+            return items;
+        }).then(items => {
+            const randItem = _.sample(items);
+            if (randItem.hasOwnProperty('url')) {
+                this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
+                    if (!err) {
+                        const imgMessage: AttachmentMessage = {
+                            body: randItem.title,
+                            attachment: fs.createReadStream(`${this.dirRoot}/media/${path}`),
+                        };
+                        api.sendMessage(imgMessage, msg.threadID, (err: any, mi: MessageInfo) => {
+                            this.iu.deleteImageFromPath(path);
+                        });
+                    } else {
+                        api.sendMessage('Something went wrong.', msg.threadID);
+                    }
+                });
+            } else {
+                api.sendMessage(randItem.title, msg.threadID);
+                api.sendMessage(randItem.selftext, msg.threadID);
+            }
+
+            return;
+        }).then(Promise.resolve);
     }
 
 }
