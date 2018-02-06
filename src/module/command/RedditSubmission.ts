@@ -34,7 +34,7 @@ export default class RedditSubmission extends Command {
                 if (post.url.endsWith('gifv')) {
                     let newName = post.url;
                     newName = post.url.slice(0, -4);
-                    newName = `${newName}jpg`;
+                    newName = `${newName}mp4`;
                     post.url = newName;
                 }
                 console.log("NEW URL: " + post.url);
