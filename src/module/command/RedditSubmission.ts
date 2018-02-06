@@ -79,7 +79,7 @@ export default class RedditSubmission extends Command {
                 });
             } else if (randItem.hasOwnProperty('text')) {
                 api.sendMessage(randItem.title, msg.threadID);
-                api.sendMessage(randItem.selftext, msg.threadID);
+                api.sendMessage(randItem.text, msg.threadID);
             } else {
                 api.sendMessage(`I'm not sure what this is, but here you go:`, msg.threadID);
                 api.sendMessage(`${randItem.title}\n\n${randItem.other}`, msg.threadID);
