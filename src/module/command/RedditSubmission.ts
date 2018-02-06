@@ -64,7 +64,7 @@ export default class RedditSubmission extends Command {
                         });
                     } else {
                         api.sendMessage(`Something went wrong. Here is the link instead: ${randItem.url}`, msg.threadID);
-                        console.log(err);
+                        console.error(err);
                     }
                 });
             } else {
