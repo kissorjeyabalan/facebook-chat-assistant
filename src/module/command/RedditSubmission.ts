@@ -31,7 +31,7 @@ export default class RedditSubmission extends Command {
         this.r.getHot(sub, {limit: 25}).then(posts => {
             const items: any =  [];
             for (const post of posts) {
-                if (post.url.endsWith('gifv')) {
+                if (post.url.endsWith('gifv') || post.url.endsWith('webm')) {
                     let newName = post.url;
                     newName = post.url.slice(0, -4);
                     newName = `${newName}mp4`;
@@ -47,11 +47,12 @@ export default class RedditSubmission extends Command {
                         });
                     }
                     items.push(item);
+                } else if (post.is_self) {
+                    const item = {title: post.title, text: post.selftext};
+                    items.push(item);
                 } else {
-                    if (post.is_self) {
-                        const item = {title: post.title, text: post.selftext};
-                        items.push(item);
-                    }
+                    const item = {title: post.title, other: post.url};
+                    items.push(item);
                 }
             }
 
@@ -72,9 +73,12 @@ export default class RedditSubmission extends Command {
                         api.sendMessage(randItem.url, msg.threadID);
                     }
                 });
-            } else {
+            } else if (randItem.hasOwnProperty('text')) {
                 api.sendMessage(randItem.title, msg.threadID);
                 api.sendMessage(randItem.selftext, msg.threadID);
+            } else {
+                api.sendMessage(`I'm not sure what this is, but here you go:`, msg.threadID);
+                api.sendMessage(`${randItem.title}\n\n${randItem.other}`, msg.threadID);
             }
 
             return;
