@@ -46,4 +46,6 @@ typings/
 .idea/
 .idea_modules/
 
+# Bot Data
+data/
 config.yml
