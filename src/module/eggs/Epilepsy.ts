@@ -15,7 +15,6 @@ export default class Epilepsy extends EasterEgg {
 
         console.log('trying to epilepsy');
 
-        console.log(api.threadColors());
         console.log(this.getRandomColor(api));
 
         this.gh.getGroupInfo(msg.threadID, (err: Error, info: gi.IGroupInfo) => {
