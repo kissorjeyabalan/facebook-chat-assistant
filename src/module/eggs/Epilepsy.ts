@@ -27,7 +27,7 @@ export default class Epilepsy extends EasterEgg {
                 setTimeout(() => {
                     api.changeThreadColor(this.getRandomColor(api), msg.threadID);
                 }, delay + (i * delay));
-                if (i === 9) {
+                if (i === 10) {
                     api.changeThreadColor(currColor, msg.threadID);
                 }
             }
