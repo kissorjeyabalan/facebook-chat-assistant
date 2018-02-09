@@ -24,7 +24,12 @@ export default class Epilepsy extends EasterEgg {
             const delay = 500;
 
             for (let i = 0; i < 10; i++) {
-                console.log('looping');
+                setTimeout(() => {
+                    api.changeThreadColor(this.getRandomColor(api), msg.threadID);
+                }, delay + (i * delay));
+                if (i === 9) {
+                    api.changeThreadColor(currColor, msg.threadID);
+                }
             }
         });
 
