@@ -13,6 +13,10 @@ export default class Epilepsy extends EasterEgg {
     public handleEgg(msg: fb.MessageEvent): any {
         const api = Global.getInstance().getApi();
 
+        console.log('trying to epilepsy');
+
+        console.log(api.threadColors());
+
         this.gh.getGroupInfo(msg.threadID, (err: Error, info: gi.IGroupInfo) => {
             const currColor = info.color || '#000000';
             const delay = 500;
