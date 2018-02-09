@@ -16,9 +16,10 @@ export default class Epilepsy extends EasterEgg {
         console.log('trying to epilepsy');
 
         console.log(api.threadColors());
+        console.log(this.getRandomColor(api));
 
         this.gh.getGroupInfo(msg.threadID, (err: Error, info: gi.IGroupInfo) => {
-            const currColor = info.color || '#000000';
+            const currColor = info.color || null;
             const delay = 500;
             for (let i = 0; i < 10; i += i) {
                 setTimeout(() => {
