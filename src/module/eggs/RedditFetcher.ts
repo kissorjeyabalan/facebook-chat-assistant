@@ -9,7 +9,7 @@ import { ImageUtil } from '../../util/ImageUtil';
 import { Reddit } from '../../util/Reddit';
 import EasterEgg from '../EasterEgg';
 
-export default class SuicidePrevention extends EasterEgg {
+export default class RedditFetcher extends EasterEgg {
     protected regex: RegExp = /^(\br\b).*$/i;
     private iu: ImageUtil = ImageUtil.getInstance();
     private r: snoowrap = Reddit.getInstance().getSnoo();
