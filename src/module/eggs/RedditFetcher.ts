@@ -1,5 +1,5 @@
 import { Promise } from 'bluebird';
-import {  AttachmentMessage, MessageEvent, MessageInfo } from 'facebook-chat-api';
+import { Api, AttachmentMessage, MessageEvent, MessageInfo } from 'facebook-chat-api';
 import * as fs from 'fs';
 import * as ip from 'impurge';
 import * as _ from 'lodash';
@@ -7,26 +7,21 @@ import * as snoowrap from 'snoowrap';
 import { Global } from '../../Global';
 import { ImageUtil } from '../../util/ImageUtil';
 import { Reddit } from '../../util/Reddit';
-import Command from '../Command';
-import { HelpDetails } from '../HelpDetails';
+import EasterEgg from '../EasterEgg';
 
-export default class RedditSubmission extends Command {
-    public help: HelpDetails = new HelpDetails('Random Reddit Submission', 'r', 'Get random submission',
-    'Gets a random image or text submission from the specified subreddit.',
-    'r <subreddit>', 'r meirl', false, false);
-    private submissions: Map<string, any> = new Map();
+export default class SuicidePrevention extends EasterEgg {
+    protected regex: RegExp = /^(\br\b).*$/i;
     private iu: ImageUtil = ImageUtil.getInstance();
     private r: snoowrap = Reddit.getInstance().getSnoo();
     private dirRoot: string = `${__dirname}/../..`;
 
-    public isValid(args: string): boolean {
-        const split = args.split(' ');
+    public handleEgg(msg: MessageEvent): any {
+        if (!this.isValid(msg.body)) {
+            return;
+        }
 
-        return split.length === 1;
-    }
-
-    public run(msg: MessageEvent, sub: string): any {
         const api = Global.getInstance().getApi();
+        const sub: string = msg.body.split(' ')[1];
 
         this.r.getHot(sub, {limit: 25}).then(posts => {
             const items: any =  [];
@@ -89,4 +84,9 @@ export default class RedditSubmission extends Command {
         }).then(Promise.resolve);
     }
 
+    private isValid(args: string): boolean {
+        const split = args.split(' ');
+
+        return split.length === 2;
+    }
 }
