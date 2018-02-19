@@ -7,8 +7,6 @@ import { ConnectionManager } from './db/ConnectionManager';
 import { Global } from './Global';
 import ScheduleHandler from './module/handler/ScheduleHandler';
 import { MessageParser } from './parser/MessageParser';
-import { ImageUtil } from './util/ImageUtil';
-import { Reddit } from './util/Reddit';
 
 ConnectionManager.getInstance().openConnection();
 const config = Configuration.getInstance();
