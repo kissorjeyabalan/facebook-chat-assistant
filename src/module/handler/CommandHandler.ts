@@ -91,7 +91,7 @@ export default class CommandHandler extends Handler {
     }
 
     private isCmd(message: MessageEvent) {
-        return message.body.toLowerCase() && message.body.startsWith(this.trigger.toLowerCase());
+        return message.body.toLowerCase() && message.body.toLowerCase().startsWith(this.trigger.toLowerCase());
     }
 
     private getMsgCmd(message: MessageEvent) {
@@ -99,7 +99,7 @@ export default class CommandHandler extends Handler {
     }
 
     private getCmdArgs(message: MessageEvent) {
-        return message.body.substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim();
+        return message.body.toLowerCase().substring(this.trigger.length + this.getMsgCmd(message).length + 1).trim();
     }
 
     private printHelp(cmd?: string) {
