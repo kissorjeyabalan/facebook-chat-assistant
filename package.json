@@ -47,7 +47,8 @@
     "pkginfo": "^0.4.1",
     "request": "^2.83.0",
     "snoowrap": "^1.15.2",
-    "tslib": "~1.8.1"
+    "tslib": "~1.8.1",
+    "find-my-friends-api": "git+ssh://git@github.com/kissorjeyabalan/find-my-friends-api.git"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
