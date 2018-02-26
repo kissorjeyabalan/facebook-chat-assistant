@@ -40,3 +40,9 @@ eggs:
 crons:
   - WednesdayFrog
 cronsubs: []
+fmf:
+  user: username
+  pass: password
+  users:
+    icloudUserID: NameToShow
+    iCloudUserID2: NameToShow
