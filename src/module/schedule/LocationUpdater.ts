@@ -31,6 +31,6 @@ export default class LocationUpdater extends Schedule {
                     lh.updateLocation(locInf, (err, found) => {});
                 }
             }
-        }, 420000);
+        }, 720000);
     }
 }
