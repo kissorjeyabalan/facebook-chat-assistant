@@ -4,6 +4,7 @@ import { FindMyFriends } from '../../util/FindMyFriends';
 import EasterEgg from '../EasterEgg';
 import { LocationHelper } from '../../db/helper/LocationHelper';
 import { setTimeout } from 'timers';
+import { Configuration } from '../../config/Configuration';
 
 export default class WhereIsEveryone extends EasterEgg {
     protected regex: RegExp = /where is everyone/i;
@@ -19,10 +20,7 @@ export default class WhereIsEveryone extends EasterEgg {
 
     private async buildMessage() {
         const lh = LocationHelper.getInstance();
-        const map = {
-            'MTg3MDI1OTYwMg~~' : 'Casey',
-            'MTI3NzY3MTQ2Ng~~' : 'Synne',
-         };
+        const map = Configuration.getInstance().fetch('fmf.users');
 
          let message: string = '';
             for (const [k, v] of Object.entries(map)) {
