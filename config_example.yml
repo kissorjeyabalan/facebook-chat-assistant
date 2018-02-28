@@ -46,3 +46,12 @@ fmf:
   users:
     icloudUserID: NameToShow
     iCloudUserID2: NameToShow
+gaming:
+  users:
+    user1:
+      discord: 'id'
+      steam: 'id'
+discord:
+  id: 'id'
+  secret: 'secret'
+  token: 'bottoken'
