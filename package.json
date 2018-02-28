@@ -36,7 +36,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "discord.js": "^11.3.0",
     "facebook-chat-api": "github:Schmavery/facebook-chat-api",
+    "find-my-friends-api": "github:kissorjeyabalan/find-my-friends-api",
     "glob": "^7.1.2",
     "impurge": "github:kissorjeyabalan/impurge",
     "js-yaml": "^3.10.0",
@@ -47,8 +49,7 @@
     "pkginfo": "^0.4.1",
     "request": "^2.83.0",
     "snoowrap": "^1.15.2",
-    "tslib": "~1.8.1",
-    "find-my-friends-api": "github:kissorjeyabalan/find-my-friends-api"
+    "tslib": "~1.8.1"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
