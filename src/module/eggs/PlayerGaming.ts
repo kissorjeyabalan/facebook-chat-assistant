@@ -13,7 +13,7 @@ export default class PlayerGaming extends EasterEgg {
     public async handleEgg(msg: fb.MessageEvent): Promise<any> {
         const api = Global.getInstance().getApi();
 
-        const person = msg.body.split('gaming')[0].split('is')[1].toLowerCase().trim();
+        const person = msg.body.match(/(?<=is\s).*(?=\sgaming)/i)[0].toLowerCase();
         const users = Configuration.getInstance().fetch('gaming.users');
         console.log(users);
         console.log(person);
