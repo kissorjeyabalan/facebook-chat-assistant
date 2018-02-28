@@ -14,7 +14,7 @@ export class FindMyFriends {
         }
         this.friend = new fmf();
 
-        this.friend.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'));
+        this.friend.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'), (res, rej) => {});
         FindMyFriends.instance = this;
     }
 
