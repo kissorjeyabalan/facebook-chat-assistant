@@ -15,6 +15,9 @@ export default class PlayerGaming extends EasterEgg {
 
         const person = msg.body.split('gaming')[0].split('is')[1].toLowerCase().trim();
         const users = Configuration.getInstance().fetch('gaming.users');
+        console.log(users);
+        console.log(person);
+        console.log(users[person]);
 
         if (users[person] === undefined) {
             api.sendMessage(`${this.capitalizeFirstLetter(person)} is not a valid person.`, msg.threadID);
