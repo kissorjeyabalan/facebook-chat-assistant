@@ -13,11 +13,9 @@ export default class PlayerGaming extends EasterEgg {
     public async handleEgg(msg: fb.MessageEvent): Promise<any> {
         const api = Global.getInstance().getApi();
 
-        const person = msg.body.match(/(?<=is\s).*(?=\sgaming)/i)[0].toLowerCase();
+        const regex = /is (.*?) gaming/i;
+        const person = msg.body.match(regex)[1].toLowerCase();
         const users = Configuration.getInstance().fetch('gaming.users');
-        console.log(users);
-        console.log(person);
-        console.log(users[person]);
 
         if (users[person] === undefined) {
             api.sendMessage(`${this.capitalizeFirstLetter(person)} is not a valid person.`, msg.threadID);
