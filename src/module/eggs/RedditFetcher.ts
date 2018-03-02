@@ -47,8 +47,10 @@ export default class RedditFetcher extends EasterEgg {
                     }
                     items.push(item);
                 } else if (post.is_self) {
-                    const item = {title: post.title, text: post.selftext};
-                    items.push(item);
+                    if (post.selftext.split(' ').length < 35) {
+                        const item = {title: post.title, text: post.selftext};
+                        items.push(item);
+                    }
                 } else {
                     const item = {title: post.title, other: post.url};
                     items.push(item);
@@ -76,7 +78,6 @@ export default class RedditFetcher extends EasterEgg {
                 api.sendMessage(randItem.title, msg.threadID);
                 api.sendMessage(randItem.text, msg.threadID);
             } else {
-                api.sendMessage(`I'm not sure what this is, but here you go:`, msg.threadID);
                 api.sendMessage(`${randItem.title}\n\n${randItem.other}`, msg.threadID);
             }
 
