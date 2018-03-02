@@ -47,7 +47,7 @@ export default class RedditFetcher extends EasterEgg {
                     }
                     items.push(item);
                 } else if (post.is_self) {
-                    if (post.selftext.split(' ').length < 35) {
+                    if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
                         const item = {title: post.title, text: post.selftext};
                         items.push(item);
                     }
