@@ -76,7 +76,9 @@ export default class RedditFetcher extends EasterEgg {
                 });
             } else if (randItem.hasOwnProperty('text')) {
                 api.sendMessage(randItem.title, msg.threadID);
-                api.sendMessage(randItem.text, msg.threadID);
+                setTimeout(() => {
+                    api.sendMessage(randItem.text, msg.threadID);
+                }, 666);
             } else {
                 api.sendMessage(`${randItem.title}\n\n${randItem.other}`, msg.threadID);
             }
