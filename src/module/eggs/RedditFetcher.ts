@@ -87,7 +87,9 @@ export default class RedditFetcher extends EasterEgg {
             }
 
             return;
-        }).then(Promise.resolve).catch(err => console.log(err));
+        }).then(Promise.resolve).catch(err => {
+            api.sendMessage(`Message: ${err.body.message}\n\nReason: ${err.body.reason}`, msg.threadID);
+        });
     }
 
     private isValid(args: string): boolean {
