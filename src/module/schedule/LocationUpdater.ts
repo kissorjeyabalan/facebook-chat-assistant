@@ -18,6 +18,10 @@ export default class LocationUpdater extends Schedule {
             const locs = await fmf.getAllLocations();
             for (const i in locs) {
                 if (locs[i].location != null) {
+                    let zip = '';
+                    if (locs[i].location.address.formattedAddressLines[1] != undefined) {
+                        zip = locs[i].location.address.formattedAddressLines[1].split(' ')[0];
+                    }
                     const locInf: ILocationInfo = {
                         user: locs[i].id,
                         country: locs[i].location.address.country,
@@ -26,7 +30,7 @@ export default class LocationUpdater extends Schedule {
                         countrycode: locs[i].location.address.countryCode,
                         locality: locs[i].location.address.locality,
                         administrativearea: locs[i].location.address.administrativeArea,
-                        zip: locs[i].location.address.formattedAddressLines[1].split(' ')[0],
+                        zip: zip,
                     };
                     lh.updateLocation(locInf, (err, found) => {});
                 }
