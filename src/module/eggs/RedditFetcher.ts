@@ -64,6 +64,7 @@ export default class RedditFetcher extends EasterEgg {
         }).then(items => {
             if (items == null) {
                 api.sendMessage(`/r/${sub} is empty.`, msg.threadID);
+
                 return;
             }
             const randItem = _.sample(items);
