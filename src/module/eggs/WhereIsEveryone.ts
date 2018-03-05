@@ -43,7 +43,7 @@ export default class WhereIsEveryone extends EasterEgg {
                             } else {
                                 message += `\n\n${v} was last seen at ${streetname}, ${loc.zip} ${loc.locality}.`;
                             }
-                            streetname = undefined;
+                            streetname = '';
                         }
                     });
                     resolve();
