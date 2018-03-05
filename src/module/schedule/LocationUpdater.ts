@@ -19,7 +19,7 @@ export default class LocationUpdater extends Schedule {
             for (const i in locs) {
                 if (locs[i].location != null) {
                     let zip = '';
-                    if (locs[i].location.address.formattedAddressLines[1] != undefined) {
+                    if (locs[i].location.address.formattedAddressLines[1] != null) {
                         zip = locs[i].location.address.formattedAddressLines[1].split(' ')[0];
                     }
                     const locInf: ILocationInfo = {
