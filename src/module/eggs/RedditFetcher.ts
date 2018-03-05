@@ -62,6 +62,10 @@ export default class RedditFetcher extends EasterEgg {
 
             return items;
         }).then(items => {
+            if (items == null) {
+                api.sendMessage(`/r/${sub} is empty.`, msg.threadID);
+                return;
+            }
             const randItem = _.sample(items);
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
@@ -88,7 +92,11 @@ export default class RedditFetcher extends EasterEgg {
 
             return;
         }).then(Promise.resolve).catch(err => {
-            api.sendMessage(`Message: ${err.error.message}\nReason: ${err.error.reason}`, msg.threadID);
+            if (err.hasOwnProperty('error') && err.error.hasOwnProperty('message') && err.error.hasOwnProperty('reason')) {
+                api.sendMessage(`Message: ${err.error.message}\nReason: ${err.error.reason}`, msg.threadID);
+            } else {
+                api.sendMessage(`/r/${sub} does not exist.`, msg.threadID);
+            }
         });
     }
 
