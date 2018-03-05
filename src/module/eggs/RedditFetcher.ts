@@ -26,6 +26,9 @@ export default class RedditFetcher extends EasterEgg {
         this.r.getHot(sub, {limit: 25}).then(posts => {
             const items: any =  [];
             for (const post of posts) {
+                if (post.url == undefined) {
+                    post.url = '';
+                }
                 if (post.url.endsWith('gifv') || post.url.endsWith('webm')) {
                     let newName = post.url;
                     newName = post.url.slice(0, -4);
@@ -84,7 +87,7 @@ export default class RedditFetcher extends EasterEgg {
             }
 
             return;
-        }).then(Promise.resolve);
+        }).then(Promise.resolve).catch(err => console.log(err));
     }
 
     private isValid(args: string): boolean {
