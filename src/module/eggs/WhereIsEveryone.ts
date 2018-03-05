@@ -29,14 +29,13 @@ export default class WhereIsEveryone extends EasterEgg {
                         if (err) {
                             message += `\n\n${v} could not be located.`;
                         } else {
-                            let streetname;
+                            let streetname = '';
 
                             if (loc.streetaddress != null) {
                                 streetname = loc.streetaddress;
                             } else if (loc.streetname != null) {
                                 streetname = loc.streetname;
                             }
-
 
                             if (streetname.trim().length == 0 && loc.country != null) {
                                 message += `\n\n${v} was last seen in ${loc.locality}, ${loc.country}.`;
