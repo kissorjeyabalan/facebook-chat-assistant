@@ -60,8 +60,7 @@ export default class CommandHandler extends Handler {
         const cmdInstance = this.commandInstances.get(cmd);
 
         if (cmdInstance === undefined) {
-            console.log(`Module for ${cmd} does not exist. Ignoring request.`);
-
+            //console.log(`Module for ${cmd} does not exist. Ignoring request.`);
             return message;
         }
 
