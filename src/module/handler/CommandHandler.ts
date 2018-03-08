@@ -23,7 +23,7 @@ export default class CommandHandler extends Handler {
         .map(cbfn => require(cbfn).default)
         .filter(e => e.prototype instanceof Command)
         .map(e => {
-            if (!Configuration.getInstance().isCmdEnabled(e.prototype.constructor.name)) {
+            if (!Configuration.getInstance().isCmdEnabled(e.prototype.constructor.name.split(' ').join(''))) {
                 console.info(`Command ${e.prototype.constructor.name} is not enabled.`);
 
                 return undefined;
