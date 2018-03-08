@@ -52,7 +52,7 @@ export default class Love extends EasterEgg {
                 } else if (data.toString() === 'No short answer available') {
                     api.sendMessage(notSpecific[this.getRndNum(notSpecific.length)], msg.threadID);
                 } else if (data.toString() === 'My name is Wolfram Alpha.') {
-                    api.sendMessage(`My name is ${Configuration.getInstance().fetch('bot.name.nick')}.`, msg.threadID);
+                    api.sendMessage(`My name is ${Configuration.getInstance().fetch('bot.name.full')}.`, msg.threadID);
                 } else if (data.toString() === 'I was created by Stephen Wolfram and his team.') {
                     api.sendMessage('I am my own creator.', msg.threadID);
                 } else {
