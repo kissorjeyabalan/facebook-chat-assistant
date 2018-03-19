@@ -8,17 +8,22 @@ import { Discord } from '../../util/Discord';
 import EasterEgg from '../EasterEgg';
 
 export default class PlayerGaming extends EasterEgg {
-    protected regex: RegExp = /is *(.+) gaming/i;
+    protected regex: RegExp = /(is *(.+) gaming)|(what is *(.+) doing)/i;
 
     public async handleEgg(msg: fb.MessageEvent): Promise<any> {
         const api = Global.getInstance().getApi();
 
         const regex = /is (.*?) gaming/i;
-        const person = msg.body.match(regex)[1].toLowerCase();
+        const regex2 = /what is *(.+) doing/i;
+
+        let person = null;
+        if (msg.body.match(regex) || msg.body.match(regex2)) {
+            person = msg.body.match(regex)[1].toLowerCase();
+        }
         const users = Configuration.getInstance().fetch('gaming.users');
 
         if (users[person] === undefined) {
-            api.sendMessage(`${this.capitalizeFirstLetter(person)} is not a valid person.`, msg.threadID);
+            api.sendMessage(`I don't know what ${this.capitalizeFirstLetter(person)} is doing.`, msg.threadID);
 
             return Promise.resolve(msg);
         }
@@ -33,9 +38,9 @@ export default class PlayerGaming extends EasterEgg {
         }
 
         if (game != null) {
-            api.sendMessage(`${this.capitalizeFirstLetter(person)} is playing ${game}.`, msg.threadID);
+            api.sendMessage(`${this.capitalizeFirstLetter(person)} is currently in ${game}.`, msg.threadID);
         } else {
-            api.sendMessage(`${this.capitalizeFirstLetter(person)} is currently not in a game.`, msg.threadID);
+            api.sendMessage(`I don't know what ${this.capitalizeFirstLetter(person)} is doing.`, msg.threadID);
         }
 
         return Promise.resolve(msg);
