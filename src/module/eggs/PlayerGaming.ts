@@ -17,9 +17,12 @@ export default class PlayerGaming extends EasterEgg {
         const regex2 = /what is *(.+) doing/i;
 
         let person = null;
-        if (msg.body.match(regex) || msg.body.match(regex2)) {
-            console.log(msg.body.match(regex));
+        if (msg.body.match(regex)) {
             person = msg.body.match(regex)[1].toLowerCase();
+        } else if (msg.body.match(regex2)) {
+            person = msg.body.match(regex2)[1].toLowerCase();
+        } else {
+            return Promise.reject('Failed to match');
         }
         const users = Configuration.getInstance().fetch('gaming.users');
 
