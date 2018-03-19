@@ -18,6 +18,7 @@ export default class PlayerGaming extends EasterEgg {
 
         let person = null;
         if (msg.body.match(regex) || msg.body.match(regex2)) {
+            console.log(msg.body.match(regex));
             person = msg.body.match(regex)[1].toLowerCase();
         }
         const users = Configuration.getInstance().fetch('gaming.users');
