@@ -26,7 +26,7 @@ export default class Epilepsy extends EasterEgg {
                             if (!err) {
                                 const name = info.names[res.senderID];
                                 const time = new Date(res.timestamp);
-                                api.sendMessage(`${res.message}\n-- ${name}, ${time.toUTCString()}`, msg.threadID);
+                                api.sendMessage(`${res.message}\n-- ${name}, ${time.getDate()}/${time.getMonth() + 1}/${time.getYear() - 100}, ${time.getHours()}:${time.getMinutes()}`, msg.threadID);
                             }
                         });
                     }

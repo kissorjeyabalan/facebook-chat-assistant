@@ -48,9 +48,9 @@ export default class Love extends EasterEgg {
         .on('response', (res) => {
             res.on('data', (data) => {
                 if (data.toString() === 'Wolfram|Alpha did not understand your input') {
-                    api.sendMessage(didNotUnderstandArr[this.getRndNum(didNotUnderstandArr.length)], msg.threadID);
+//                    api.sendMessage(didNotUnderstandArr[this.getRndNum(didNotUnderstandArr.length)], msg.threadID);
                 } else if (data.toString() === 'No short answer available') {
-                    api.sendMessage(notSpecific[this.getRndNum(notSpecific.length)], msg.threadID);
+  //                  api.sendMessage(notSpecific[this.getRndNum(notSpecific.length)], msg.threadID);
                 } else if (data.toString() === 'My name is Wolfram Alpha.') {
                     api.sendMessage(`My name is ${Configuration.getInstance().fetch('bot.name.full')}, but you can call me ${Configuration.getInstance().fetch('bot.name.nick')}.`, msg.threadID);
                 } else if (data.toString() === 'I was created by Stephen Wolfram and his team.') {
