@@ -5,38 +5,35 @@ import { GroupHelper } from '../../db/helper/GroupHelper';
 import * as gi from '../../db/model/GroupInfo';
 import { Global } from '../../Global';
 import EasterEgg from '../EasterEgg';
+import { Configuration } from '../../config/Configuration';
+import * as sm from '../../db/model/SavedMessage';
+import { IGroupInfo } from '../../db/model/GroupInfo';
 
 export default class Epilepsy extends EasterEgg {
-    protected regex: RegExp = /(flash me)|(gimme dat epilepsy)/i;
+    protected regex: RegExp = /randmess/i;
     private gh: GroupHelper = GroupHelper.getInstance();
+
 
     public handleEgg(msg: fb.MessageEvent): any {
         const api = Global.getInstance().getApi();
 
-        console.log('trying to epilepsy');
-
-        this.gh.getGroupInfo(msg.threadID, (err: Error, info: gi.IGroupInfo) => {
+        sm.getModel(msg).count({}, (err, count) => {
             if (!err) {
-                const currColor = info.color || null;
-                const delay = 500;
-
-                for (let i = 0; i < 10; i += i) {
-                    setTimeout(() => {
-                        api.changeThreadColor(this.getRandomColor(api), msg.threadID);
-                    }, delay + (i * delay));
-                    if (i === 10) {
-                        api.changeThreadColor(currColor, msg.threadID);
+                const random = Math.floor(Math.random() * count);
+                sm.getModel(msg).findOne({}).skip(random).exec((err, res: sm.SavedMessageModel) => {
+                    if (!err) {
+                        this.gh.getGroupInfo(msg.threadID, (err, info: IGroupInfo) => {
+                            if (!err) {
+                                const name = info.names[res.senderID];
+                                const time = new Date(res.timestamp);
+                                api.sendMessage(`${res.message}\n-- ${name}, ${time.toUTCString()}`, msg.threadID);
+                            }
+                        });
                     }
-                }
+                });
             }
         });
 
         return Promise.resolve(msg);
-    }
-
-    private getRandomColor(api: fb.Api) {
-        const colors = Object.keys(api.threadColors).map(n => api.threadColors[n]);
-
-        return colors[Math.floor(Math.random() * colors.length)];
     }
 }
