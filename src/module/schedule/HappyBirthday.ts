@@ -11,7 +11,7 @@ export default class HappyBirthday extends Schedule {
     const p1 = ns.scheduleJob(date1, () => {
       const api: fb.Api = Global.getInstance().getApi();
       const hpmsg: any = {
-        body: 'Happy Birthday, Casey! 23 is pretty old, man. Get your life together.',
+        body: 'Happy Birthday, Casey! 23 is pretty old, man. Get your life together. Oh, no. I am the one who needs to get it together, not you. Sorry. Forgive me.',
         mentions: [{
           tag: 'Casey',
           id: 1616826839,
