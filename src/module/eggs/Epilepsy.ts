@@ -10,7 +10,7 @@ import * as sm from '../../db/model/SavedMessage';
 import { IGroupInfo } from '../../db/model/GroupInfo';
 
 export default class Epilepsy extends EasterEgg {
-    protected regex: RegExp = /randmess/i;
+    protected regex: RegExp = /^[rm]{2}$/i;
     private gh: GroupHelper = GroupHelper.getInstance();
 
 
@@ -26,7 +26,7 @@ export default class Epilepsy extends EasterEgg {
                             if (!err) {
                                 const name = info.names[res.senderID];
                                 const time = new Date(res.timestamp);
-                                api.sendMessage(`${res.message}\n-- ${name}, ${time.getDate()}/${time.getMonth() + 1}/${time.getYear() - 100}, ${time.getHours()}:${time.getMinutes()}`, msg.threadID);
+                                api.sendMessage(`${res.message}\n-- ${name}`, msg.threadID);
                             }
                         });
                     }
