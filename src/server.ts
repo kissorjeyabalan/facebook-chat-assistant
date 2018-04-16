@@ -1,6 +1,5 @@
 import * as chat from 'facebook-chat-api';
 import * as fs from 'fs';
-import * as _ from 'lodash';
 import { setTimeout } from 'timers';
 import { Configuration } from './config/Configuration';
 import { ConnectionManager } from './db/ConnectionManager';
