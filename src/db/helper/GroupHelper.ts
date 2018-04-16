@@ -47,7 +47,7 @@ export class GroupHelper {
                 api.sendMessage(msg, message.threadID);
             }
             if (!err) {
-                api.getThreadInfoGraphQL(message.threadID, (err: fb.Error, thread: fb.ThreadInfoGraphQL) => {
+                api.getThreadInfo(message.threadID, (err: fb.Error, thread: fb.ThreadInfoGraphQL) => {
                     if (thread) {
                         const threadInfo: gi.IGroupInfo = info || <gi.IGroupInfo>{};
                         threadInfo.threadID = message.threadID;
