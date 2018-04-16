@@ -9,15 +9,14 @@ import { Configuration } from '../../config/Configuration';
 import * as sm from '../../db/model/SavedMessage';
 import { IGroupInfo } from '../../db/model/GroupInfo';
 
-export default class Epilepsy extends EasterEgg {
+export default class OldMessage extends EasterEgg {
     protected regex: RegExp = /^[rm]{2}$/i;
     private gh: GroupHelper = GroupHelper.getInstance();
-
-
+    
     public handleEgg(msg: fb.MessageEvent): any {
         const api = Global.getInstance().getApi();
 
-        sm.getModel(msg).count({}, (err, count) => {
+        /*sm.getModel(msg).count({}, (err, count) => {
             if (!err) {
                 const random = Math.floor(Math.random() * count);
                 sm.getModel(msg).findOne({}).skip(random).exec((err, res: sm.SavedMessageModel) => {
@@ -32,7 +31,9 @@ export default class Epilepsy extends EasterEgg {
                     }
                 });
             }
-        });
+        });*/
+
+        api.sendMessage('This command has been disabled.', msg.threadID);
 
         return Promise.resolve(msg);
     }
