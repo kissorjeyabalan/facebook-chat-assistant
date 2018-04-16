@@ -1,4 +1,6 @@
 FROM node:carbon
+RUN echo "Europe/Oslo" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
