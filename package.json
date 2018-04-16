@@ -1,6 +1,6 @@
 {
   "name": "facebook-chat-assistant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A facebook chat bot, intended to be used in group chats.",
   "engineStrict": true,
   "engines": {
