@@ -9,7 +9,7 @@ import { Reddit } from '../../util/Reddit';
 import EasterEgg from '../EasterEgg';
 
 export default class DankMeme extends EasterEgg {
-    protected regex: RegExp = /(how do i get laid)|(dating advice)/i;
+    protected regex: RegExp = /(how to get laid)|(dating advice)/i;
     private dirRoot: string = `${__dirname}/../..`;
     private links: any = [];
     private r: snoowrap = Reddit.getInstance().getSnoo();
