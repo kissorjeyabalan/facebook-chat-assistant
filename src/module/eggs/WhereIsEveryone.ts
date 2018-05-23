@@ -1,21 +1,24 @@
 import { Api, Error, MessageEvent } from 'facebook-chat-api';
+import { setTimeout } from 'timers';
+import { Configuration } from '../../config/Configuration';
+import { LocationHelper } from '../../db/helper/LocationHelper';
 import { Global } from '../../Global';
 import { FindMyFriends } from '../../util/FindMyFriends';
 import EasterEgg from '../EasterEgg';
-import { LocationHelper } from '../../db/helper/LocationHelper';
-import { setTimeout } from 'timers';
-import { Configuration } from '../../config/Configuration';
 
 export default class WhereIsEveryone extends EasterEgg {
     protected regex: RegExp = /where is everyone/i;
 
     public async handleEgg(msg: MessageEvent): Promise<any> {
-        const api = Global.getInstance().getApi();
-        const locs = await this.buildMessage();
+        if (msg.threadID == '1623275961054128' || msg.threadID == '1420517794899222') {
+            const api = Global.getInstance().getApi();
+            const locs = await this.buildMessage();
+            api.sendMessage(locs.toString().trim(), msg.threadID);
 
-        api.sendMessage(locs.toString().trim(), msg.threadID);
-
-        return Promise.resolve(msg);
+            return Promise.resolve(msg);
+        } else {
+            return Promise.resolve(msg);
+        }
     }
 
     private async buildMessage() {
