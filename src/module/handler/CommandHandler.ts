@@ -14,7 +14,7 @@ export default class CommandHandler extends Handler {
     private commandInstances: Map<string, Command>;
     private uh: UserHelper = UserHelper.getInstance();
 
-    public constructor() {
+    private constructor() {
         super();
         this.trigger = Configuration.getInstance().fetch('bot.trigger');
 

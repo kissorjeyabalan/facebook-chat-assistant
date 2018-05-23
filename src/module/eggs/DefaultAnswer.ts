@@ -4,11 +4,9 @@ import * as request from 'request';
 import { Configuration } from '../../config/Configuration';
 import { Global } from '../../Global';
 import EasterEgg from '../EasterEgg';
-import CommandHandler from '../handler/CommandHandler';
 
 export default class Love extends EasterEgg {
     protected regex: RegExp = /^emol? /i;
-    private cmdHandler: CommandHandler = new CommandHandler();
 
     public handleEgg(msg: MessageEvent): any {
         const query = msg.body.split(' ').slice(1).join(' ').trim();
@@ -50,10 +48,8 @@ export default class Love extends EasterEgg {
         .on('response', (res) => {
             res.on('data', (data) => {
                 if (data.toString() === 'Wolfram|Alpha did not understand your input') {
-                    this.cmdHandler.handle(msg);
 //                    api.sendMessage(didNotUnderstandArr[this.getRndNum(didNotUnderstandArr.length)], msg.threadID);
                 } else if (data.toString() === 'No short answer available') {
-                    api.sendMessage('idk', msg.threadID);
   //                  api.sendMessage(notSpecific[this.getRndNum(notSpecific.length)], msg.threadID);
                 } else if (data.toString() === 'My name is Wolfram Alpha.') {
                     api.sendMessage(`My name is ${Configuration.getInstance().fetch('bot.name.full')}, but you can call me ${Configuration.getInstance().fetch('bot.name.nick')}.`, msg.threadID);
