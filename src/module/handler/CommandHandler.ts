@@ -90,8 +90,6 @@ export default class CommandHandler extends Handler {
     }
 
     private isCmd(message: MessageEvent) {
-        console.log(message);
-        
         return message.body.toLowerCase() && message.body.toLowerCase().startsWith(this.trigger.toLowerCase());
     }
 
