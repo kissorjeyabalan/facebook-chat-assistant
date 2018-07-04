@@ -7,14 +7,14 @@ import { FindMyFriends } from '../../util/FindMyFriends';
 import EasterEgg from '../EasterEgg';
 import { ILocationInfo } from '../../db/model/LocationInfo';
 
-export default class WhereIsEveryone extends EasterEgg {
+export default class ForceLocation extends EasterEgg {
     protected regex: RegExp = /fql/i;
 
     public async handleEgg(msg: MessageEvent): Promise<any> {
         if (msg.threadID == '1623275961054128' || msg.threadID == '1420517794899222') {
             const api = Global.getInstance().getApi();
             const config: Configuration = Configuration.getInstance();
-            
+
             const locMsg = await this.buildMessage();
             api.sendMessage(locMsg.toString().trim(), msg.threadID);
         }
