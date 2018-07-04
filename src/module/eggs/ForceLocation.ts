@@ -1,4 +1,5 @@
 import { Api, Error, MessageEvent } from 'facebook-chat-api';
+import * as ns from 'node-schedule';
 import { setTimeout } from 'timers';
 import { Configuration } from '../../config/Configuration';
 import { LocationHelper } from '../../db/helper/LocationHelper';
