@@ -22,9 +22,9 @@ export default class LocationUpdater extends Schedule {
             const locs = await fmf.getAllLocations();
 
             for (const i in locs) {
-                if (locs[i].location != null) {
+                if (locs[i].location != undefined) {
                     let zip = '';
-                    if (locs[i].location.address.formattedAddressLines[1] != null) {
+                    if (locs[i].location.address.formattedAddressLines[1]) {
                         zip = locs[i].location.address.formattedAddressLines[1].split(' ')[0];
                     }
                     const locInf: ILocationInfo = {
