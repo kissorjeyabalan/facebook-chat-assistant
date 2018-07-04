@@ -5,25 +5,47 @@ import { LocationHelper } from '../../db/helper/LocationHelper';
 import { Global } from '../../Global';
 import { FindMyFriends } from '../../util/FindMyFriends';
 import EasterEgg from '../EasterEgg';
+import { ILocationInfo } from '../../db/model/LocationInfo';
 
 export default class WhereIsEveryone extends EasterEgg {
-    protected regex: RegExp = /where is everyone/i;
+    protected regex: RegExp = /fql/i;
 
     public async handleEgg(msg: MessageEvent): Promise<any> {
         if (msg.threadID == '1623275961054128' || msg.threadID == '1420517794899222') {
             const api = Global.getInstance().getApi();
-            const locs = await this.buildMessage();
-            api.sendMessage(locs.toString().trim(), msg.threadID);
-
-            return Promise.resolve(msg);
-        } else {
-            return Promise.resolve(msg);
+            const config: Configuration = Configuration.getInstance();
+            
+            const locMsg = await this.buildMessage();
+            api.sendMessage(locMsg.toString().trim(), msg.threadID);
         }
+        return Promise.resolve(msg);
     }
 
     private async buildMessage() {
         const lh = LocationHelper.getInstance();
         const map = Configuration.getInstance().fetch('fmf.users');
+        const fmf: any = FindMyFriends.getInstance().getFriend();
+        const locs = await fmf.getAllLocations();
+            for (const i in locs) {
+                if (locs[i].location != null) {
+                    let zip = '';
+                    if (locs[i].location.address.formattedAddressLines[1] != null) {
+                        zip = locs[i].location.address.formattedAddressLines[1].split(' ')[0];
+                    }
+                    const locInf: ILocationInfo = {
+                        user: locs[i].id,
+                        country: locs[i].location.address.country,
+                        streetname: locs[i].location.address.streetName,
+                        streetaddress: locs[i].location.address.streetAddress,
+                        countrycode: locs[i].location.address.countryCode,
+                        locality: locs[i].location.address.locality,
+                        administrativearea: locs[i].location.address.administrativeArea,
+                        zip: zip,
+                    };
+                    lh.updateLocation(locInf, (err, found) => {});
+                }
+            }
+        await this.sleep(1000);
 
          let message: string = '';
             for (const [k, v] of Object.entries(map)) {
@@ -61,3 +83,8 @@ export default class WhereIsEveryone extends EasterEgg {
         return new Promise(r => setTimeout(r, ms));
       }
 }
+
+const cron = ns.scheduleJob('14 /3 * * *', async (fireDate) => {
+    
+
+});

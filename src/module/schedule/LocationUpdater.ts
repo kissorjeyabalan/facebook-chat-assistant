@@ -9,13 +9,18 @@ import { ILocationInfo } from '../../db/model/LocationInfo';
 
 export default class LocationUpdater extends Schedule {
     private dirRoot: string = `${__dirname}/../..`;
-    public async start(): Promise<any> {
+
+    public start(): void {
         const config: Configuration = Configuration.getInstance();
         const lh: LocationHelper = LocationHelper.getInstance();
         const fmf: any = FindMyFriends.getInstance().getFriend();
 
-        setInterval(async () => {
+        
+
+
+        const cron = ns.scheduleJob('14 /3 * * *', async (fireDate) => {
             const locs = await fmf.getAllLocations();
+
             for (const i in locs) {
                 if (locs[i].location != null) {
                     let zip = '';
@@ -35,6 +40,6 @@ export default class LocationUpdater extends Schedule {
                     lh.updateLocation(locInf, (err, found) => {});
                 }
             }
-        }, 720000);
+        });
     }
 }
