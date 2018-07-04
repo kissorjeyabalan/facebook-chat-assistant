@@ -12,10 +12,8 @@ export class FindMyFriends {
         if (FindMyFriends.instance) {
             throw new Error('FindMyFriends already exists!');
         }
-        this.friend = new fmf();
 
-        await this.friend.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'), (res, rej) => {});
-        this.friend.getAllLocations();
+        this.init();
         FindMyFriends.instance = this;
     }
 
@@ -26,5 +24,11 @@ export class FindMyFriends {
 
     public getFriend(): any {
         return this.friend;
+    }
+
+    public async init() {
+        this.friend = new fmf();
+        await this.friend.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'));
+        this.friend.getAllLocations();
     }
 }
