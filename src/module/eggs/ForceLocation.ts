@@ -11,6 +11,7 @@ export default class ForceLocation extends EasterEgg {
     protected regex: RegExp = /fql/i;
 
     public async handleEgg(msg: MessageEvent): Promise<any> {
+        console.log('force location query triggered');
         if (msg.threadID == '1623275961054128' || msg.threadID == '1420517794899222') {
             const api = Global.getInstance().getApi();
             const config: Configuration = Configuration.getInstance();
