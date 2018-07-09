@@ -21,7 +21,11 @@ export default class RedditFetcher extends EasterEgg {
         }
 
         const api = Global.getInstance().getApi();
-        const sub: string = msg.body.split(' ')[1];
+        let sub: string = msg.body.split(' ')[1];
+	const origSub = sub;
+	if (sub.toLowerCase() == 'casey') {
+	    sub = 'me_irl+meirl+2meirl4meirl';
+	}
 
         this.r.getHot(sub, {limit: 25}).then(posts => {
             const items: any =  [];
@@ -36,7 +40,9 @@ export default class RedditFetcher extends EasterEgg {
                     post.url = newName;
                 }
                 if (this.iu.isImageUri(post.url) || ip.is_imgur(post.url)) {
-                    const item = {title: post.title, url: post.url};
+                    let postTitle = post.title;
+			if (origSub.toLowerCase() == 'casey'){postTitle='casey_irl';}
+			const item = {title: postTitle, url: post.url};
                     if (ip.is_imgur(post.url)) {
                         ip.purge(post.url, (err, res) => {
                             if (!err) {
@@ -71,8 +77,10 @@ export default class RedditFetcher extends EasterEgg {
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
                     if (!err) {
+			let postTitle = randItem.title;
+			if (origSub== 'casey'){postTitle='casey_irl';}
                         const imgMessage: AttachmentMessage = {
-                            body: randItem.title,
+                            body: postTitle,
                             attachment: fs.createReadStream(`${this.dirRoot}/media/${path}`),
                         };
                         api.sendMessage(imgMessage, msg.threadID, (err: any, mi: MessageInfo) => {

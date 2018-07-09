@@ -9,7 +9,7 @@ import EasterEgg from '../EasterEgg';
 import { ILocationInfo } from '../../db/model/LocationInfo';
 
 export default class ForceLocation extends EasterEgg {
-    protected regex: RegExp = /fql/i;
+    protected regex: RegExp = /where is everyone/i;
 
     public async handleEgg(msg: MessageEvent): Promise<any> {
         console.log('force location query triggered');
