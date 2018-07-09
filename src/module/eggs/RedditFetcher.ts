@@ -94,6 +94,7 @@ export default class RedditFetcher extends EasterEgg {
             let items = await this.weedReposts(posts, origSub, msg);
             return items;
         }).then(items => {
+            console.log("GOT THIS FAR!!!!!!!!!!!!!!!!");
             if (items == null) {
                 api.sendMessage(`/r/${sub} is empty.`, msg.threadID);
                 return;
