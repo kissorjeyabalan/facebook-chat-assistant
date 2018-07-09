@@ -36,10 +36,10 @@ export class RepostHelper {
     }
 
     public setRepost(chatId: string, postUrl: string, postName: string) {
-        const options = mongoose.ModelFindOneAndUpdateOptions = {
+        const options: mongoose.ModelFindOneAndUpdateOptions = {
             upsert: true,
-            new: true
-        }
+            new: true,
+        };
         const insItem: repost.IRepost = {
             chatid: chatId,
             post: postName,
