@@ -23,7 +23,6 @@ export default class RedditFetcher extends EasterEgg {
         let items: any = [];
         let i = 0;
         for (const post of posts) {
-            console.log("looping");
             if (post.url == undefined) {
                 post.url = '';
             }
@@ -50,7 +49,6 @@ export default class RedditFetcher extends EasterEgg {
                 }
                 const isRepost = await RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)
                 if (!isRepost) {
-                    console.log('IS NOT REPOST');
                     items.push(item);
                 }
             } else if (post.is_self) {
@@ -58,7 +56,6 @@ export default class RedditFetcher extends EasterEgg {
                     const item = { title: post.title, text: post.selftext };
                     const isRepost = await RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)
                     if (!isRepost) {
-                        console.log('IS NOT REPOST');
                         items.push(item);
                     }
                 }
@@ -66,12 +63,10 @@ export default class RedditFetcher extends EasterEgg {
                 const item = { title: post.title, other: post.url };
                 const isRepost = await RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)
                 if (!isRepost) {
-                    console.log('IS NOT REPOST');
                     items.push(item);
                 }
             }
             i++;
-            console.log("i is " + i + " and post length is " + posts.length);
             if (i == posts.length) {
                 resolve(items);
             }
