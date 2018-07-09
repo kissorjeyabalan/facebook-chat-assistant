@@ -29,9 +29,10 @@ export default class RedditFetcher extends EasterEgg {
             sub = 'me_irl+meirl+2meirl4meirl';
         }
 
-        this.r.getHot(sub, { limit: 100 }).then(posts => {
+        this.r.getHot(sub, { limit: 100 }).then(async posts => {
             const items: any = [];
             for (const post of posts) {
+                let postIsRepost = false;
                 console.log("looping");
                 if (post.url == undefined) {
                     post.url = '';
@@ -57,19 +58,20 @@ export default class RedditFetcher extends EasterEgg {
                             }
                         });
                     }
-                    if (!RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                    if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
                         items.push(item);
                     }
                 } else if (post.is_self) {
                     if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
                         const item = { title: post.title, text: post.selftext };
-                        if (!RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
+                        if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
                             items.push(item);
                         }
                     }
                 } else {
                     const item = { title: post.title, other: post.url };
-                    if (!RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                    if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                        console.log();
                         items.push(item);
                     }
                 }
