@@ -8,6 +8,8 @@ import { Global } from '../../Global';
 import { ImageUtil } from '../../util/ImageUtil';
 import { Reddit } from '../../util/Reddit';
 import EasterEgg from '../EasterEgg';
+import { RepostHelper } from '../../db/helper/RepostHelper';
+import { IRepost, Repost } from '../../db/model/Repost';
 
 export default class RedditFetcher extends EasterEgg {
     protected regex: RegExp = /^(\br\b).*$/i;
@@ -22,14 +24,15 @@ export default class RedditFetcher extends EasterEgg {
 
         const api = Global.getInstance().getApi();
         let sub: string = msg.body.split(' ')[1];
-	const origSub = sub;
-	if (sub.toLowerCase() == 'casey') {
-	    sub = 'me_irl+meirl+2meirl4meirl';
-	}
+        const origSub = sub;
+        if (sub.toLowerCase() == 'casey') {
+            sub = 'me_irl+meirl+2meirl4meirl';
+        }
 
-        this.r.getHot(sub, {limit: 25}).then(posts => {
-            const items: any =  [];
+        this.r.getHot(sub, { limit: 100 }).then(posts => {
+            const items: any = [];
             for (const post of posts) {
+
                 if (post.url == undefined) {
                     post.url = '';
                 }
@@ -41,8 +44,8 @@ export default class RedditFetcher extends EasterEgg {
                 }
                 if (this.iu.isImageUri(post.url) || ip.is_imgur(post.url)) {
                     let postTitle = post.title;
-			if (origSub.toLowerCase() == 'casey'){postTitle='casey_irl';}
-			const item = {title: postTitle, url: post.url};
+                    if (origSub.toLowerCase() == 'casey') { postTitle = 'casey_irl'; }
+                    const item = { title: postTitle, url: post.url };
                     if (ip.is_imgur(post.url)) {
                         ip.purge(post.url, (err, res) => {
                             if (!err) {
@@ -54,14 +57,23 @@ export default class RedditFetcher extends EasterEgg {
                             }
                         });
                     }
+                    if (RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                        return;
+                    }
                     items.push(item);
                 } else if (post.is_self) {
                     if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
-                        const item = {title: post.title, text: post.selftext};
+                        const item = { title: post.title, text: post.selftext };
+                        if (RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
+                            return;
+                        }
                         items.push(item);
                     }
                 } else {
-                    const item = {title: post.title, other: post.url};
+                    const item = { title: post.title, other: post.url };
+                    if (RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                        return;
+                    }
                     items.push(item);
                 }
             }
@@ -77,17 +89,19 @@ export default class RedditFetcher extends EasterEgg {
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
                     if (!err) {
-			let postTitle = randItem.title;
-			if (origSub== 'casey'){postTitle='casey_irl';}
+                        let postTitle = randItem.title;
+                        if (origSub == 'casey') { postTitle = 'casey_irl'; }
                         const imgMessage: AttachmentMessage = {
                             body: postTitle,
                             attachment: fs.createReadStream(`${this.dirRoot}/media/${path}`),
                         };
                         api.sendMessage(imgMessage, msg.threadID, (err: any, mi: MessageInfo) => {
                             this.iu.deleteImageFromPath(path);
+                            RepostHelper.getInstance().setRepost(msg.threadID, randItem.url, randItem.url);
                         });
                     } else {
                         api.sendMessage(randItem.url, msg.threadID);
+                        RepostHelper.getInstance().setRepost(msg.threadID, randItem.url, randItem.url);
                     }
                 });
             } else if (randItem.hasOwnProperty('text')) {
@@ -95,8 +109,10 @@ export default class RedditFetcher extends EasterEgg {
                 setTimeout(() => {
                     api.sendMessage(randItem.text, msg.threadID);
                 }, 666);
+                RepostHelper.getInstance().setRepost(msg.threadID, randItem.text, randItem.text);
             } else {
                 api.sendMessage(`${randItem.title}\n\n${randItem.other}`, msg.threadID);
+                RepostHelper.getInstance().setRepost(msg.threadID, randItem.other, randItem.other);
             }
 
             return;
@@ -104,7 +120,7 @@ export default class RedditFetcher extends EasterEgg {
             if (err.hasOwnProperty('error') && err.error.hasOwnProperty('message') && err.error.hasOwnProperty('reason')) {
                 api.sendMessage(`Message: ${err.error.message}\nReason: ${err.error.reason}`, msg.threadID);
             } else {
-                api.sendMessage(`/r/${sub} does not exist.`, msg.threadID);
+                api.sendMessage(`/r/${sub} does not exist or empty.`, msg.threadID);
             }
         });
     }
