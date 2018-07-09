@@ -25,10 +25,13 @@ export class RepostHelper {
         return new Promise((resolve) => {
             repost.Repost.findOne({chatid: chatId, posturl: postUrl, post: postName}, (err, obj) => {
                 if (err) {
+                    console.log("resolving false from error");
                     resolve(false);
                 } else if (obj !== null) {
+                    console.log("resolving true because object not null");
                     resolve(true);
                 } else {
+                    console.log("resolving false for no reason");
                     resolve(false);
                 }
             }); 
