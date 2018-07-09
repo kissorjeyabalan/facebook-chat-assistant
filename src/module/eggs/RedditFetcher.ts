@@ -59,19 +59,21 @@ export default class RedditFetcher extends EasterEgg {
                         });
                     }
                     if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                        console.log('IS NOT REPOST');
                         items.push(item);
                     }
                 } else if (post.is_self) {
                     if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
                         const item = { title: post.title, text: post.selftext };
                         if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
+                            console.log('IS NOT REPOST');
                             items.push(item);
                         }
                     }
                 } else {
                     const item = { title: post.title, other: post.url };
                     if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
-                        console.log();
+                        console.log('IS NOT REPOST');
                         items.push(item);
                     }
                 }
