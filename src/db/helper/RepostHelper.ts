@@ -27,8 +27,9 @@ export class RepostHelper {
                 if (err) {
                     console.log("resolving false from error");
                     resolve(false);
-                } else if (obj !== undefined) {
+                } else if (obj !== null) {
                     console.log("resolving true because object not null");
+                    console.log(obj);
                     resolve(true);
                 } else {
                     console.log("resolving false for no reason");
