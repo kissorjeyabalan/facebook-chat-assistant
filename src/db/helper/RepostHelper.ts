@@ -40,6 +40,7 @@ export class RepostHelper {
     }
 
     public setRepost(chatId: string, postUrl: string, postName: string) {
+        console.log("setRepost received " + chatId + " " + postUrl + " " + postName);
         const options: mongoose.ModelFindOneAndUpdateOptions = {
             upsert: true,
             new: true,
@@ -49,6 +50,10 @@ export class RepostHelper {
             post: postName,
             posturl: postUrl
         };
-        repost.Repost.findOneAndUpdate({chatid: chatId, posturl: postUrl, post: postName}, insItem, options);
+        console.log('upserting');
+        repost.Repost.findOneAndUpdate({chatid: chatId, posturl: postUrl, post: postName}, insItem, options, (err: any, res: any) => {
+            console.log(err);
+            console.log(res);
+        });
     }
 }

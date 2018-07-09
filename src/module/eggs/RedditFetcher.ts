@@ -48,6 +48,7 @@ export default class RedditFetcher extends EasterEgg {
                     });
                 }
                 const isRepost = await RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)
+                console.log("checking repost for " + msg.threadID + " " + post.url + " " + post.url);
                 if (!isRepost) {
                     items.push(item);
                 }
@@ -108,6 +109,7 @@ export default class RedditFetcher extends EasterEgg {
                         api.sendMessage(imgMessage, msg.threadID, (err: any, mi: MessageInfo) => {
                             this.iu.deleteImageFromPath(path);
                             RepostHelper.getInstance().setRepost(msg.threadID, randItem.url, randItem.url);
+                            console.log("trying to save repost for " + msg.threadID + " " + randItem.url + " " + randItem.url);
                         });
                     } else {
                         api.sendMessage(randItem.url, msg.threadID);
