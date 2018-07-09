@@ -50,10 +50,7 @@ export class RepostHelper {
             post: postName,
             posturl: postUrl
         };
-        console.log('upserting');
         repost.Repost.findOneAndUpdate({chatid: chatId, posturl: postUrl, post: postName}, insItem, options, (err: any, res: any) => {
-            console.log(err);
-            console.log(res);
         });
     }
 }
