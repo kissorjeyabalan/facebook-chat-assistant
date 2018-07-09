@@ -17,6 +17,64 @@ export default class RedditFetcher extends EasterEgg {
     private r: snoowrap = Reddit.getInstance().getSnoo();
     private dirRoot: string = `${__dirname}/../..`;
 
+
+    public async weedReposts(posts: any, origSub: string, msg): Promise<any> {
+        return new Promise(async resolve => {
+        let items: any = [];
+        let i = 0;
+        for (const post of posts) {
+            console.log("looping");
+            if (post.url == undefined) {
+                post.url = '';
+            }
+            if (post.url.endsWith('gifv') || post.url.endsWith('webm')) {
+                let newName = post.url;
+                newName = post.url.slice(0, -4);
+                newName = `${newName}mp4`;
+                post.url = newName;
+            }
+            if (this.iu.isImageUri(post.url) || ip.is_imgur(post.url)) {
+                let postTitle = post.title;
+                if (origSub.toLowerCase() == 'casey') { postTitle = 'casey_irl'; }
+                const item = { title: postTitle, url: post.url };
+                if (ip.is_imgur(post.url)) {
+                    ip.purge(post.url, (err, res) => {
+                        if (!err) {
+                            if (res[0].endsWith('.png') || res[0].endsWith('jpg') || res[0].endsWith('mp4') || res[0].endsWith('jpeg') || res[0].endsWith('gif')) {
+                                item.url = res[0];
+                            } else {
+                                item.url = `${res[0]}.jpg`;
+                            }
+                        }
+                    });
+                }
+                if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                    console.log('IS NOT REPOST');
+                    items.push(item);
+                }
+            } else if (post.is_self) {
+                if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
+                    const item = { title: post.title, text: post.selftext };
+                    if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
+                        console.log('IS NOT REPOST');
+                        items.push(item);
+                    }
+                }
+            } else {
+                const item = { title: post.title, other: post.url };
+                if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
+                    console.log('IS NOT REPOST');
+                    items.push(item);
+                }
+            }
+            i++;
+            if (i == post.length) {
+                resolve(items);
+            }
+        }
+    });
+    }
+
     public handleEgg(msg: MessageEvent): any {
         if (!this.isValid(msg.body)) {
             return;
@@ -30,55 +88,7 @@ export default class RedditFetcher extends EasterEgg {
         }
 
         this.r.getHot(sub, { limit: 100 }).then(async posts => {
-            const items: any = [];
-            for (const post of posts) {
-                let postIsRepost = false;
-                console.log("looping");
-                if (post.url == undefined) {
-                    post.url = '';
-                }
-                if (post.url.endsWith('gifv') || post.url.endsWith('webm')) {
-                    let newName = post.url;
-                    newName = post.url.slice(0, -4);
-                    newName = `${newName}mp4`;
-                    post.url = newName;
-                }
-                if (this.iu.isImageUri(post.url) || ip.is_imgur(post.url)) {
-                    let postTitle = post.title;
-                    if (origSub.toLowerCase() == 'casey') { postTitle = 'casey_irl'; }
-                    const item = { title: postTitle, url: post.url };
-                    if (ip.is_imgur(post.url)) {
-                        ip.purge(post.url, (err, res) => {
-                            if (!err) {
-                                if (res[0].endsWith('.png') || res[0].endsWith('jpg') || res[0].endsWith('mp4') || res[0].endsWith('jpeg') || res[0].endsWith('gif')) {
-                                    item.url = res[0];
-                                } else {
-                                    item.url = `${res[0]}.jpg`;
-                                }
-                            }
-                        });
-                    }
-                    if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
-                        console.log('IS NOT REPOST');
-                        items.push(item);
-                    }
-                } else if (post.is_self) {
-                    if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
-                        const item = { title: post.title, text: post.selftext };
-                        if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
-                            console.log('IS NOT REPOST');
-                            items.push(item);
-                        }
-                    }
-                } else {
-                    const item = { title: post.title, other: post.url };
-                    if (await !RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
-                        console.log('IS NOT REPOST');
-                        items.push(item);
-                    }
-                }
-            }
-
+            let items = await this.weedReposts(posts, origSub, msg);
             return items;
         }).then(items => {
             if (items == null) {
