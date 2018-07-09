@@ -71,8 +71,8 @@ export default class RedditFetcher extends EasterEgg {
                 }
             }
             i++;
-            console.log("i is " + i + " and post length is " + post.length);
-            if (i == post.length) {
+            console.log("i is " + i + " and post length is " + posts.length);
+            if (i == posts.length) {
                 resolve(items);
             }
         }
