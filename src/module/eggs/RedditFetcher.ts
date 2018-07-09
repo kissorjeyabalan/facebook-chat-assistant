@@ -58,21 +58,21 @@ export default class RedditFetcher extends EasterEgg {
                         });
                     }
                     if (RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
-                        return;
+                        break;
                     }
                     items.push(item);
                 } else if (post.is_self) {
                     if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
                         const item = { title: post.title, text: post.selftext };
                         if (RepostHelper.getInstance().isRepost(msg.threadID, post.selftext, post.selftext)) {
-                            return;
+                            break;
                         }
                         items.push(item);
                     }
                 } else {
                     const item = { title: post.title, other: post.url };
                     if (RepostHelper.getInstance().isRepost(msg.threadID, post.url, post.url)) {
-                        return;
+                        break;
                     }
                     items.push(item);
                 }
@@ -82,7 +82,6 @@ export default class RedditFetcher extends EasterEgg {
         }).then(items => {
             if (items == null) {
                 api.sendMessage(`/r/${sub} is empty.`, msg.threadID);
-
                 return;
             }
             const randItem = _.sample(items);
