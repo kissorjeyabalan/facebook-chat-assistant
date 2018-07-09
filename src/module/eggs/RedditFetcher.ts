@@ -32,7 +32,7 @@ export default class RedditFetcher extends EasterEgg {
         this.r.getHot(sub, { limit: 100 }).then(posts => {
             const items: any = [];
             for (const post of posts) {
-
+                console.log("looping");
                 if (post.url == undefined) {
                     post.url = '';
                 }
