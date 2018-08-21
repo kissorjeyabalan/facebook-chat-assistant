@@ -55,6 +55,8 @@ export default class Love extends EasterEgg {
                     api.sendMessage(`My name is ${Configuration.getInstance().fetch('bot.name.full')}, but you can call me ${Configuration.getInstance().fetch('bot.name.nick')}.`, msg.threadID);
                 } else if (data.toString() === 'I was created by Stephen Wolfram and his team.') {
                     api.sendMessage('I am my own creator.', msg.threadID);
+                } else if(data.toString() === '1-800-273-TALK 8255') {
+                    api.sendMessage('In case of emergency, call ER at 116 117 or the emergency number 113.\nMental Helse: 116 123.\nRøde Kors: 800 33 321.\nKirkens SOS: 22 40 00 40.', msg.threadID);
                 } else {
                     api.sendMessage(data.toString(), msg.threadID);
                 }
