@@ -38,7 +38,7 @@ export default class RedditFetcher extends EasterEgg {
                 const item = { title: postTitle, url: post.url };
                 if (ip.is_imgur(post.url)) {
                     ip.purge(post.url, (err, res) => {
-                        if (!err) {
+                        if (!err && res[0] != undefined) {
                             if (res[0].endsWith('.png') || res[0].endsWith('jpg') || res[0].endsWith('mp4') || res[0].endsWith('jpeg') || res[0].endsWith('gif')) {
                                 item.url = res[0];
                             } else {
@@ -51,6 +51,9 @@ export default class RedditFetcher extends EasterEgg {
                 if (!isRepost) {
                     items.push(item);
                 }
+		if (origSub.toLowerCase() == 'prosjektbahamas' || origSub.toLowerCase() == 'synne') {
+		   items.push(item);
+		}
             } else if (post.is_self) {
                 if (post.selftext.split(' ').length < 45 && post.title.split(' ').length < 45) {
                     const item = { title: post.title, text: post.selftext };
@@ -83,8 +86,10 @@ export default class RedditFetcher extends EasterEgg {
         let sub: string = msg.body.split(' ')[1];
         const origSub = sub;
         if (sub.toLowerCase() == 'casey') {
-            sub = 'me_irl+meirl+2meirl4meirl';
-        }
+            sub = 'me_irl+meirl+toomeirlformeirl+anime_irl';
+	} else if (sub.toLowerCase() == 'kissor') {
+	    sub = 'programmerhumor+bonehurtingjuice+2meirl4meirl';
+	}
 
         this.r.getHot(sub, { limit: 100 }).then(async posts => {
             let items = await this.weedReposts(posts, origSub, msg);
@@ -95,11 +100,16 @@ export default class RedditFetcher extends EasterEgg {
                 return;
             }
             const randItem = _.sample(items);
+	    let postTitle = randItem.title;
+	    if (origSub == 'casey') {
+                            postTitle = 'casey_irl';
+                        } else if (origSub == 'kissor') {
+                            postTitle = 'kissor_irl';
+                        }
+
             if (randItem.hasOwnProperty('url')) {
                 this.iu.saveImageFromUrl(randItem.url, 'temp', (err: Error, path: string) => {
                     if (!err) {
-                        let postTitle = randItem.title;
-                        if (origSub == 'casey') { postTitle = 'casey_irl'; }
                         const imgMessage: AttachmentMessage = {
                             body: postTitle,
                             attachment: fs.createReadStream(`${this.dirRoot}/media/${path}`),
