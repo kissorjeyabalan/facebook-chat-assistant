@@ -8,27 +8,43 @@ import { Discord } from '../../util/Discord';
 import EasterEgg from '../EasterEgg';
 
 export default class PlayerGaming extends EasterEgg {
-    protected regex: RegExp = /(is *(.+) gaming)|(what is *(.+) doing)/i;
+    protected regex: RegExp = /(is *(.+) gaming)|(what is *(.+) doing)|(is *(.+) still gaming)/i;
+
+    private getRndNum(length: number): number {
+        return Math.floor(Math.random() * length);
+    }
 
     public async handleEgg(msg: fb.MessageEvent): Promise<any> {
         const api = Global.getInstance().getApi();
-
+	let commandNum = -1;
         const regex = /is (.*?) gaming/i;
         const regex2 = /what is *(.+) doing/i;
+	const regex3 = /is *(.+) still gaming/i;
 
         let person = null;
-        if (msg.body.match(regex)) {
-            person = msg.body.match(regex)[1].toLowerCase();
+        if (msg.body.match(regex3)) {
+            person = msg.body.match(regex3)[1].toLowerCase();
+	    commandNum = 1;
         } else if (msg.body.match(regex2)) {
             person = msg.body.match(regex2)[1].toLowerCase();
-        } else {
+            commandNum = 0;
+        } else if (msg.body.match(regex)) {
+ 	    person = msg.body.match(regex)[1].toLowerCase();
+	    commandNum = 0;
+	} else {
             return Promise.reject('Failed to match');
         }
         const users = Configuration.getInstance().fetch('gaming.users');
+	const idkArr = [
+                'idk.',
+                'why would i know?',
+                'probably dead in a ditch somewhere, that useless fuck',
+                'in the ER maybe'
+                ];
+                const idk = idkArr[this.getRndNum(idkArr.length)];
 
         if (users[person] === undefined) {
-            api.sendMessage(`I don't know what ${this.capitalizeFirstLetter(person)} is doing.`, msg.threadID);
-
+api.sendMessage(idk, msg.threadID);
             return Promise.resolve(msg);
         }
 
@@ -42,9 +58,26 @@ export default class PlayerGaming extends EasterEgg {
         }
 
         if (game != null) {
-            api.sendMessage(`${this.capitalizeFirstLetter(person)} is currently in ${game}.`, msg.threadID);
+	    if (commandNum == 0) {
+                api.sendMessage(`${this.capitalizeFirstLetter(person)} is currently in ${game}.`, msg.threadID);
+            } else if (commandNum == 1) {
+                api.sendMessage('Yes.', msg.threadID);
+            }
         } else {
-            api.sendMessage(`I don't know what ${this.capitalizeFirstLetter(person)} is doing.`, msg.threadID);
+	    if (commandNum == 0) {
+		if (person == 'casey') {
+		const caseyAnswer = [
+		'Hmmmm... Casey is probably painting.',
+		'Wow. I thought maybe he was playing PUBG, but no! I don\'t know!',
+		'Probably doing something stereotypically american.',
+		'Out partying with his crew, maybe? Probably, that party animal.'
+		];
+		api.sendMessage(caseyAnswer[this.getRndNum(caseyAnswer.length)], msg.threadID);
+              }  else {
+		api.sendMessage(idk, msg.threadID); }
+            } else if (commandNum == 1) {
+                api.sendMessage('No.', msg.threadID);
+            }
         }
 
         return Promise.resolve(msg);
