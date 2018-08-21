@@ -49,8 +49,12 @@ chat(creds, options, (err: chat.Error, api: chat.Api) => {
     sh.start();
 
     api.listen((error: chat.Error, message: chat.MessageEvent) => {
-        if (message.senderID != config.fetch('bot.id')) {
+//        //if (error != undefined) {this.startChat();}
+	if (message.senderID != config.fetch('bot.id')) {
             mp.handle(message);
         }
     });
 });
+
+
+//startChat();
