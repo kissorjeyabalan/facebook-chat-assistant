@@ -18,7 +18,6 @@ export default class WhereIsEveryone extends EasterEgg {
             const api = Global.getInstance().getApi();
             const endTyping = api.sendTypingIndicator(msg.threadID);
             await this.fmf.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'));
-            await this.fmf.getAllLocations();
             const locs = await this.buildMessage();
             api.sendMessage(locs.toString().trim(), msg.threadID);
             endTyping();
@@ -36,9 +35,7 @@ export default class WhereIsEveryone extends EasterEgg {
         let locs = await this.fmf.getAllLocations();
         console.log(locs);
         await this.sleep(1200);
-        locs = await this.fmf.getAllLocations();
         console.log(locs);
-        
 
         return new Promise(async resolve => {
             for (const i in locs) {
