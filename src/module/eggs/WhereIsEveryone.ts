@@ -36,7 +36,7 @@ export default class WhereIsEveryone extends EasterEgg {
         const locs = await this.fmf.getAllLocations();
 
         return new Promise(async resolve => {
-            console.log(locs.toString());
+            console.log(locs);
             for (const i in locs) {
                 if (locs[i].location != undefined) {
                     let zip = '';
