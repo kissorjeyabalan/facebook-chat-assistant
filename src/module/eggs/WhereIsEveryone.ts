@@ -20,6 +20,7 @@ export default class WhereIsEveryone extends EasterEgg {
 
             const regex = /where is *(.+)/i;
             const person = msg.body.match(regex)[1];
+            console.log('person is ' + person);
 
             await this.fmf.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'));
             let locs;
@@ -36,7 +37,7 @@ export default class WhereIsEveryone extends EasterEgg {
                 }
             }
 
-            
+
             endTyping();
         }
 
@@ -87,7 +88,8 @@ export default class WhereIsEveryone extends EasterEgg {
 
         return new Promise(async resolve => {
             for (const [k, v] of Object.entries(map)) {
-                if (v.toString().toLowerCase() === person.toLowerCase()) {
+                console.log(`Checking ${v} against ${person}`);
+                if (v === (person.charAt(0).toUpperCase + person.slice(1))) {
                     const loc = await this.fmf.getLocationById(v);
                     await this.saveLocation(loc);
                     message += await this.constructLocationString(k, v);
