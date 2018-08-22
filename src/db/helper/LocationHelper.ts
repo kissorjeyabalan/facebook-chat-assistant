@@ -21,8 +21,8 @@ export class LocationHelper {
         return LocationHelper.instance;
     }
 
-    public getLastLocation(user: string, callback?: (err: Error, loc: li.ILocationInfo) => void): void {
-        li.LocationInfo.findOne({user: user}, (err, obj) => {
+    public async getLastLocation(user: string, callback?: (err: Error, loc: li.ILocationInfo) => void): void {
+        await li.LocationInfo.findOne({user: user}, (err, obj) => {
             if (err) {
                 callback(new Error('Query Error'), undefined);
             } else if (obj !== null) {
@@ -33,12 +33,12 @@ export class LocationHelper {
         }).lean();
     }
 
-   public updateLocation(updatedLoc: li.ILocationInfo, callback?: (err: Error, found: li.ILocationInfo) => void) {
+   public async updateLocation(updatedLoc: li.ILocationInfo, callback?: (err: Error, found: li.ILocationInfo) => void) {
        const options: mongoose.ModelFindOneAndUpdateOptions = {
            upsert: true,
            new: true,
        };
-       li.LocationInfo.findOneAndUpdate({user: updatedLoc.user}, updatedLoc, options, (err: any, res: any) => {
+       await li.LocationInfo.findOneAndUpdate({user: updatedLoc.user}, updatedLoc, options, (err: any, res: any) => {
            callback(err, res);
        });
    }
