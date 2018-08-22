@@ -27,7 +27,7 @@ export default class WhereIsEveryone extends EasterEgg {
         return Promise.resolve(msg);
     }
 
-    private async buildMessage() {
+    private async buildMessage(): Promise<any> {
 
         const map = Configuration.getInstance().fetch('fmf.users');
 
@@ -64,7 +64,7 @@ export default class WhereIsEveryone extends EasterEgg {
 
     }
 
-    private async constructLocationString(k: any, v: any) {
+    private async constructLocationString(k: any, v: any): Promise<any> {
         return new Promise(async res => {
             let message = '';
             await this.lh.getLastLocation(k, (err, loc) => {
