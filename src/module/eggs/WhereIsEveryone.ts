@@ -8,7 +8,7 @@ import EasterEgg from '../EasterEgg';
 import { ILocationInfo } from '../../db/model/LocationInfo';
 
 export default class WhereIsEveryone extends EasterEgg {
-    protected regex: RegExp = /where is everyone/i;
+    protected regex: RegExp = /where is *(.+)/i;
     private fmf: any = new fmf();
     private config: Configuration = Configuration.getInstance();
     private lh: LocationHelper = LocationHelper.getInstance();
@@ -17,25 +17,39 @@ export default class WhereIsEveryone extends EasterEgg {
         if (msg.threadID == '1623275961054128' || msg.threadID == '1420517794899222') {
             const api = Global.getInstance().getApi();
             const endTyping = api.sendTypingIndicator(msg.threadID);
+
+            const regex = /where is *(.+)/i;
+            const person = msg.body.match(regex)[1];
+
             await this.fmf.login(this.config.fetch('fmf.user'), this.config.fetch('fmf.pass'));
-            const locs = await this.buildMessage();
-            api.sendMessage(locs.toString().trim(), msg.threadID);
+            let locs;
+
+            if (person.toLowerCase() === 'everyone') {
+                locs = await this.getEveryone();
+                api.sendMessage(locs.toString().trim(), msg.threadID);
+            } else {
+                locs = await this.getSingle(person);
+                if (locs !== undefined) {
+                    api.sendMessage(locs.toString().trim(), msg.threadID);
+                } else {
+                    api.sendMessage(`I don't know who ${person} is.`, msg.threadID);
+                }
+            }
+
+            
             endTyping();
         }
 
         return Promise.resolve(msg);
     }
 
-    private async buildMessage(): Promise<any> {
+    private async getEveryone(): Promise<any> {
 
         const map = Configuration.getInstance().fetch('fmf.users');
 
         let message: string = '';
 
-        let locs = await this.fmf.getAllLocations();
-        console.log(locs);
-        await this.sleep(1200);
-        console.log(locs);
+        const locs = await this.fmf.getAllLocations();
 
         return new Promise(async resolve => {
             for (const i in locs) {
@@ -54,7 +68,6 @@ export default class WhereIsEveryone extends EasterEgg {
                         administrativearea: locs[i].location.address.administrativeArea,
                         zip: zip,
                     };
-                    console.log("saving " + locs[i]);
                     await this.lh.updateLocation(locInf, (err, found) => {});
                 }
             }
@@ -64,7 +77,49 @@ export default class WhereIsEveryone extends EasterEgg {
             }
             resolve(message);
         });
+    }
 
+    private async getSingle(person: string): Promise<any> {
+
+        const map = Configuration.getInstance().fetch('fmf.users');
+
+        let message: string = '';
+
+        return new Promise(async resolve => {
+            for (const [k, v] of Object.entries(map)) {
+                if (v.toString().toLowerCase() === person.toLowerCase()) {
+                    const loc = await this.fmf.getLocationById(v);
+                    await this.saveLocation(loc);
+                    message += await this.constructLocationString(k, v);
+                    resolve(message);
+                    break;
+                }
+            }
+            resolve(undefined);
+        });
+    }
+
+    private async saveLocation(loc: any): Promise<any> {
+        return new Promise(async resolve => {
+            if (loc.location != undefined) {
+                let zip = '';
+                if (loc.location.address.formattedAddressLines[1]) {
+                    zip = loc.location.address.formattedAddressLines[1].split(' ')[0];
+                }
+                const locInf: ILocationInfo = {
+                    user: loc.id,
+                    country: loc.location.address.country,
+                    streetname: loc.location.address.streetName,
+                    streetaddress: loc.location.address.streetAddress,
+                    countrycode: loc.location.address.countryCode,
+                    locality: loc.location.address.locality,
+                    administrativearea: loc.location.address.administrativeArea,
+                    zip: zip,
+                };
+                await this.lh.updateLocation(locInf, (err, found) => {});
+                resolve();
+            }
+        });
     }
 
     private async constructLocationString(k: any, v: any): Promise<any> {
