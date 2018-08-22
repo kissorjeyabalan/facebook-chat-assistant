@@ -74,10 +74,10 @@ export default class WhereIsEveryone extends EasterEgg {
                     let streetname = '';
                     if (loc.streetaddress != undefined) {
                         streetname = loc.streetaddress;
-                    }
-                    if (loc.streetname != undefined) {
+                    } else if (loc.streetname != undefined) {
                         streetname = loc.streetname;
                     }
+
                     if (streetname.trim().length == 0 && loc.country != undefined) {
                         message += `\n\n${v} was last seen in ${loc.locality}, ${loc.country}.`;
                     } else {
