@@ -33,10 +33,14 @@ export default class WhereIsEveryone extends EasterEgg {
 
         let message: string = '';
 
-        const locs = await this.fmf.getAllLocations();
+        let locs = await this.fmf.getAllLocations();
+        console.log(locs);
+        await this.sleep(1200);
+        locs = await this.fmf.getAllLocations();
+        console.log(locs);
+        
 
         return new Promise(async resolve => {
-            console.log(locs);
             for (const i in locs) {
                 if (locs[i].location != undefined) {
                     let zip = '';
@@ -53,6 +57,7 @@ export default class WhereIsEveryone extends EasterEgg {
                         administrativearea: locs[i].location.address.administrativeArea,
                         zip: zip,
                     };
+                    console.log("saving " + locs[i]);
                     await this.lh.updateLocation(locInf, (err, found) => {});
                 }
             }
