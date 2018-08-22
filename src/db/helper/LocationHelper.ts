@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import { Configuration } from '../../config/Configuration';
 import { Global } from '../../Global';
 import * as li from '../model/LocationInfo';
+import { resolve } from 'bluebird';
 
 export class LocationHelper {
     private static instance: LocationHelper = new LocationHelper();
@@ -21,25 +22,31 @@ export class LocationHelper {
         return LocationHelper.instance;
     }
 
-    public async getLastLocation(user: string, callback?: (err: Error, loc: li.ILocationInfo) => void): void {
-        await li.LocationInfo.findOne({user: user}, (err, obj) => {
-            if (err) {
-                callback(new Error('Query Error'), undefined);
-            } else if (obj !== null) {
-                callback(undefined, obj);
-            } else {
-                callback(undefined, undefined);
-            }
-        }).lean();
+    public getLastLocation(user: string, callback?: (err: Error, loc: li.ILocationInfo) => void): Promise<any> {
+        return new Promise(resolve => {
+            li.LocationInfo.findOne({user: user}, (err, obj) => {
+                resolve();
+                if (err) {
+                    callback(new Error('Query Error'), undefined);
+                } else if (obj !== null) {
+                    callback(undefined, obj);
+                } else {
+                    callback(undefined, undefined);
+                }
+            }).lean();
+        });
     }
 
-   public async updateLocation(updatedLoc: li.ILocationInfo, callback?: (err: Error, found: li.ILocationInfo) => void) {
-       const options: mongoose.ModelFindOneAndUpdateOptions = {
-           upsert: true,
-           new: true,
-       };
-       await li.LocationInfo.findOneAndUpdate({user: updatedLoc.user}, updatedLoc, options, (err: any, res: any) => {
-           callback(err, res);
+   public updateLocation(updatedLoc: li.ILocationInfo, callback?: (err: Error, found: li.ILocationInfo) => void): Promise<any> {
+       return new Promise(resolve => {
+        const options: mongoose.ModelFindOneAndUpdateOptions = {
+            upsert: true,
+            new: true,
+        };
+        li.LocationInfo.findOneAndUpdate({user: updatedLoc.user}, updatedLoc, options, (err: any, res: any) => {
+            resolve();
+            callback(err, res);
+        });
        });
    }
 }
