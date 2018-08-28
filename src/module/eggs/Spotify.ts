@@ -36,10 +36,8 @@ export default class Spotify extends EasterEgg {
 							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: {bestMatch.name}\n─────⚪──────\n◄◄⠀▐▐ ⠀► 𝟸:𝟷𝟾 / 𝟹:𝟻𝟼\n───○ 🔊⠀ ᴴᴰ ⚙️`;
 							const url = bestMatch.external_urls.spotify;
                             const preview = bestMatch.preview_url;
-							const path = 
 							if (preview) {
-								
-								request(preview).pipe(fs.createWriteStream(path)).on('close', (err, data) => {
+								request(preview).pipe(fs.createWriteStream(`${this.dirRoot}/media/temp.mp3}`)).on('close', (err, data) => {
 									if (!err) {
 										const audioMessage: AttachmentMessage = {
 											body: "",
@@ -53,16 +51,15 @@ export default class Spotify extends EasterEgg {
 									}
 								});
 							} else {
-								api.sendMessage('no.');
+								api.sendMessage('no');
 							}
 						}
 					} else {
 						console.log(err);
 					}
-				)};
-			};
+				});
+			}
 		});
-		
 	}
 	
 	private logInSpotify(callback = () => {}) {
