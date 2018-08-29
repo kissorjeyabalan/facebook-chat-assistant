@@ -62,7 +62,7 @@ export default class Spotify extends EasterEgg {
 												api.sendMessage(audioMessage, msg.threadID, (err, data) => {
 													console.log(err);
 													console.log(data);
-													fs.unlink(`${this.dirRoot}/media/temp/med.mp4`, (err) => {
+													fs.unlink(`${this.dirRoot}/media/temp/med.mp3`, (err) => {
 														console.log(err);
 													});
 												});
