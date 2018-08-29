@@ -48,11 +48,11 @@ export default class Spotify extends EasterEgg {
 											});
 										});
 									} else {
-										api.sendMessage('failed to download :(((((');
+										api.sendMessage('failed to download :(((((', msg.threadID);
 									}
 								});
 							} else {
-								api.sendMessage('no');
+								api.sendMessage('no', msg.threadID);
 							}
 						}
 					} else {
