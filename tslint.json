@@ -52,7 +52,6 @@
             }
         ],
         "no-internal-module": true,
-        "no-trailing-whitespace": true,
         "no-null-keyword": false,
         "prefer-const": true,
         "jsdoc-format": true,
@@ -72,6 +71,9 @@
         "no-object-literal-type-assertion": false,
         "no-for-in": false,
         "triple-equals": false,
-        "underscore-consistent-invocation": false
+        "underscore-consistent-invocation": false,
+        "no-trailing-whitespace": false,
+        "indent": false,
+        "no-consecutive-blank-lines": false
     }
   }
