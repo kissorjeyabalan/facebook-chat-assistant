@@ -52,20 +52,20 @@ export default class Spotify extends EasterEgg {
 									};
 
 									request(options).on('response', (res) => {
-										console.log(res);
-										res.pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.mp3}`)).on('close', (err, data) => {
+										res.pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.${res.headers['content-type'].split('/')[1]}}`)).on('close', (err, data) => {
 											if (!err) {
 												console.log(data);
 												const audioMessage: fb.AttachmentMessage = {
 													body: message,
-													attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.mp3}`),
+													attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.${res.headers['content-type'].split('/')[1]}}`),
 												};
 												api.sendMessage(audioMessage, msg.threadID, (err, data) => {
-													fs.unlink(`${this.dirRoot}/media/temp/med.mp3`, (err) => {
+													fs.unlink(`${this.dirRoot}/media/temp/.${res.headers['content-type'].split('/')[1]}`, (err) => {
 														console.log(err);
 													});
 												});
 											} else {
+												console.log(err);
 												api.sendMessage('failed to download :(((((', msg.threadID);
 											}
 										});
