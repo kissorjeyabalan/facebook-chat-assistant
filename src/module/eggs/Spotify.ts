@@ -35,29 +35,30 @@ export default class Spotify extends EasterEgg {
 						if (bestMatch) {
 							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: {bestMatch.name}\n─────⚪──────\n◄◄⠀▐▐ ⠀► 𝟸:𝟷𝟾 / 𝟹:𝟻𝟼\n───○ 🔊⠀ ᴴᴰ ⚙️`;
 							const url = bestMatch.external_urls.spotify;
-							const preview = bestMatch.preview_url;
+							let preview = bestMatch.preview_url;
 							let iteration = 0;
 							while (!preview && iteration < data.body.tracks.items.length) {
 								iteration += 1;
-							}
-							if (preview) {
-								request(preview).pipe(fs.createWriteStream(`${this.dirRoot}/media/temp.mp3}`)).on('close', (err, data) => {
-									if (!err) {
-										const audioMessage: fb.AttachmentMessage = {
-											body: '',
-											attachment: fs.createReadStream(`${this.dirRoot}/media/temp.mp3}`),
-										};
-										api.sendMessage(audioMessage, msg.threadID, (err, data) => {
-											fs.unlink(`${this.dirRoot}/media/temp.mp3`, (err) => {
-												console.log(err);
+								preview = data.body.tracks.items[iteration].preview_url;
+								if (preview) {
+									request(preview).pipe(fs.createWriteStream(`${this.dirRoot}/media/temp.mp3}`)).on('close', (err, data) => {
+										if (!err) {
+											const audioMessage: fb.AttachmentMessage = {
+												body: '',
+												attachment: fs.createReadStream(`${this.dirRoot}/media/temp.mp3}`),
+											};
+											api.sendMessage(audioMessage, msg.threadID, (err, data) => {
+												fs.unlink(`${this.dirRoot}/media/temp.mp3`, (err) => {
+													console.log(err);
+												});
 											});
-										});
-									} else {
-										api.sendMessage('failed to download :(((((', msg.threadID);
-									}
-								});
-							} else {
-								api.sendMessage('no', msg.threadID);
+										} else {
+											api.sendMessage('failed to download :(((((', msg.threadID);
+										}
+									});
+								} else if (iteration <= data.body.tracks.items.length) {
+									api.sendMessage('no', msg.threadID);
+								}
 							}
 						}
 					} else {
