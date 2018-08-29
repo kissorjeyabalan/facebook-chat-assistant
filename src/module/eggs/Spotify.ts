@@ -35,7 +35,11 @@ export default class Spotify extends EasterEgg {
 						if (bestMatch) {
 							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: {bestMatch.name}\n─────⚪──────\n◄◄⠀▐▐ ⠀► 𝟸:𝟷𝟾 / 𝟹:𝟻𝟼\n───○ 🔊⠀ ᴴᴰ ⚙️`;
 							const url = bestMatch.external_urls.spotify;
-                            const preview = bestMatch.preview_url;
+							const preview = bestMatch.preview_url;
+							let iteration = 0;
+							while (!preview && iteration < data.body.tracks.items.length) {
+								iteration += 1;
+							}
 							if (preview) {
 								request(preview).pipe(fs.createWriteStream(`${this.dirRoot}/media/temp.mp3}`)).on('close', (err, data) => {
 									if (!err) {
