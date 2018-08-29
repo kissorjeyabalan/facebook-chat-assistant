@@ -33,7 +33,7 @@ export default class Spotify extends EasterEgg {
 					if (!err) {
 						const bestMatch = data.body.tracks.items[0];
 						if (bestMatch) {
-							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: {bestMatch.name}\n─────⚪──────\n◄◄⠀▐▐ ⠀► 𝟸:𝟷𝟾 / 𝟹:𝟻𝟼\n───○ 🔊⠀ ᴴᴰ ⚙️`;
+							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: {bestMatch.name}\n─────⚪──────\n───○ 🔊⠀ ᴴᴰ ⚙️`;
 							const url = bestMatch.external_urls.spotify;
 							let preview = bestMatch.preview_url;
 							let iteration = 0;
@@ -52,15 +52,17 @@ export default class Spotify extends EasterEgg {
 									};
 
 									request(options).on('response', (res) => {
-										res.pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.${res.headers['content-type'].split('/')[1]}}`)).on('close', (err, data) => {
+										res.pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.mp3`)).on('close', (err, data) => {
 											if (!err) {
 												console.log(data);
 												const audioMessage: fb.AttachmentMessage = {
 													body: message,
-													attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.${res.headers['content-type'].split('/')[1]}}`),
+													attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.mp3`),
 												};
 												api.sendMessage(audioMessage, msg.threadID, (err, data) => {
-													fs.unlink(`${this.dirRoot}/media/temp/.${res.headers['content-type'].split('/')[1]}`, (err) => {
+													console.log(err);
+													console.log(data);
+													fs.unlink(`${this.dirRoot}/media/temp/med.mp4`, (err) => {
 														console.log(err);
 													});
 												});
