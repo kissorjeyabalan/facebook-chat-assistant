@@ -41,20 +41,34 @@ export default class Spotify extends EasterEgg {
 								iteration += 1;
 								preview = data.body.tracks.items[iteration].preview_url;
 								if (preview) {
-									request(preview).pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.mp3}`)).on('close', (err, data) => {
-										if (!err) {
-											const audioMessage: fb.AttachmentMessage = {
-												body: message,
-												attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.mp3}`),
-											};
-											api.sendMessage(audioMessage, msg.threadID, (err, data) => {
-												fs.unlink(`${this.dirRoot}/media/temp/med.mp3`, (err) => {
-													console.log(err);
+
+									const options: request.OptionsWithUri = {
+										method: 'GET',
+										uri: preview,
+										headers: {
+											'User-Agent': `${Configuration.getInstance().fetch('bot.name.nick')}/${module.exports.version}`,
+										},
+										encoding: null,
+									};
+
+									request(options).on('response', (res) => {
+										console.log(res);
+										res.pipe(fs.createWriteStream(`${this.dirRoot}/media/temp/med.mp3}`)).on('close', (err, data) => {
+											if (!err) {
+												console.log(data);
+												const audioMessage: fb.AttachmentMessage = {
+													body: message,
+													attachment: fs.createReadStream(`${this.dirRoot}/media/temp/med.mp3}`),
+												};
+												api.sendMessage(audioMessage, msg.threadID, (err, data) => {
+													fs.unlink(`${this.dirRoot}/media/temp/med.mp3`, (err) => {
+														console.log(err);
+													});
 												});
-											});
-										} else {
-											api.sendMessage('failed to download :(((((', msg.threadID);
-										}
+											} else {
+												api.sendMessage('failed to download :(((((', msg.threadID);
+											}
+										});
 									});
 								} else if (iteration === data.body.tracks.items.length) {
 									api.sendMessage('no', msg.threadID);
