@@ -20,12 +20,8 @@ export default class Spotify extends EasterEgg {
 	public async handleEgg(msg: fb.MessageEvent): Promise<any> {
 		const api = Global.getInstance().getApi();
 		const regex = /emol play *(.+)/i;
-
-
-		console.log('Spotify command triggered.');
 		
 		if (!msg.body.match(regex)) {
-			console.log('Spotify: Invalid syntax.');
 			return Promise.resolve();
 		}
 		
@@ -64,6 +60,8 @@ export default class Spotify extends EasterEgg {
 						console.log(err);
 					}
 				});
+			} else {
+				console.log(err);
 			}
 		});
 	}
