@@ -32,6 +32,7 @@ export default class Spotify extends EasterEgg {
 				this.spotify.searchTracks(query, {}, (err, data) => {
 					if (!err) {
 						const bestMatch = data.body.tracks.items[0];
+						console.log(bestMatch);
 						if (bestMatch) {
 							const message = `ɴᴏᴡ ᴘʟᴀʏɪɴɢ: ${bestMatch.name}\n───○ 🔊⠀ ᴴᴰ ⚙️`;
 							const url = bestMatch.external_urls.spotify;
@@ -40,6 +41,7 @@ export default class Spotify extends EasterEgg {
 							while (!preview && iteration < data.body.tracks.items.length) {
 								iteration += 1;
 								preview = data.body.tracks.items[iteration].preview_url;
+								console.log(data.body.tracks.items[iteration]);
 								if (preview) {
 
 									const options: request.OptionsWithUri = {
@@ -72,7 +74,7 @@ export default class Spotify extends EasterEgg {
 											}
 										});
 									});
-								} else if (iteration === data.body.tracks.items.length) {
+								} else if (iteration <= data.body.tracks.items.length) {
 									api.sendMessage('no', msg.threadID);
 								}
 							}
