@@ -11,7 +11,17 @@ class Configuration {
         var instance: Configuration = Configuration()
     }
 
-    private var config: Any = yaml.safeLoad(fs.readFileSync("config.yml", "utf-8")) as Any
+    private var config: Any? = null
+
+    init {
+        try {
+            config = yaml.safeLoad(fs.readFileSync("config.yml", "utf-8")) as Any
+        } catch (e: dynamic) {
+            createDefaultConfig()
+            js("throw 'Configuration was missing! Please fill out the generated config.yml'")
+        }
+    }
+
 
     fun has(prop: String): Boolean {
         return lodash.has(config, prop) as Boolean
@@ -45,5 +55,27 @@ class Configuration {
         } else {
             false
         }
+    }
+
+    private fun createDefaultConfig() {
+        val obj = object{}
+        lodash.set(obj, "facebook.username", "email")
+        lodash.set(obj, "facebook.password", "password")
+        lodash.set(obj, "facebook.state", "/path/to/state.json")
+        lodash.set(obj, "bot.trigger", "#")
+        lodash.set(obj, "bot.name.full", "John Doe")
+        lodash.set(obj, "bot.name.nick", "Mr. Bot")
+        lodash.set(obj, "bot.id", 123456)
+        lodash.set(obj, "bot.admin", 123456)
+        lodash.set(obj, "bot.behaviour.logLevel", "warn")
+        lodash.set(obj, "bot.behaviour.selfListen", false)
+        lodash.set(obj, "bot.behaviour.listenEvents", false)
+        lodash.set(obj, "bot.behaviour.pageID", "")
+        lodash.set(obj, "bot.behaviour.updatePresence", false)
+        lodash.set(obj, "bot.behaviour.forceLogin", false)
+        lodash.set(obj, "bot.behaviour.timeout", 30)
+
+        val temp = yaml.safeDump(obj)
+        fs.writeFileSync("config.yml", temp, "utf-8")
     }
 }
