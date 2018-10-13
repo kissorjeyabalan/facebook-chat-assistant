@@ -55,3 +55,5 @@ config.yml
 gradle-app.settings
 !gradle-wrapper.jar
 .gradletasknamecache
+
+node/
