@@ -1,0 +1,22 @@
+{
+  "name": "facebook-chat-assistant",
+  "version": "3.0.0",
+  "description": "A modular bot for Facebook Messenger Chats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kissorjeyabalan/facebook-chat-assistant.git"
+  },
+  "author": "Kissor Jeyabalan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kissorjeyabalan/facebook-chat-assistant/issues"
+  },
+  "homepage": "https://github.com/kissorjeyabalan/facebook-chat-assistant#readme",
+  "dependencies": {
+    "kotlin": "^1.2.71"
+  }
+}
