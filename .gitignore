@@ -1,3 +1,5 @@
+.gradle
+.DS_Store
 *.iml
 # Logs
 logs
@@ -48,3 +50,8 @@ typings/
 .idea_modules/
 
 config.yml
+
+/build/
+gradle-app.settings
+!gradle-wrapper.jar
+.gradletasknamecache
