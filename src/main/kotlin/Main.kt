@@ -1,5 +1,6 @@
-external fun require(module:String):dynamic
+import config.Configuration
 
 fun main(args: Array<String>) {
-    // entry point
+    println("Hello my friends!")
+    val config = Configuration.instance
 }
