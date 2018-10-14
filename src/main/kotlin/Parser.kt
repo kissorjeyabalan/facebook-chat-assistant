@@ -1,14 +1,12 @@
-import config.Configuration
-import externals.facebook.Event
 import externals.facebook.MessageEvent
 import handler.CommandHandler
-import handler.Handler
+import handler.RegexHandler
 import kotlin.js.Promise
 
 class Parser {
-    val config = Configuration.instance
-    private val handlers = arrayListOf<Handler>(
-            CommandHandler()
+    private val handlers = arrayListOf(
+            CommandHandler(),
+            RegexHandler()
     )
 
     fun handle(message: MessageEvent) {

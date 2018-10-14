@@ -40,6 +40,11 @@ class Configuration {
         return get("commands.$cmd.enabled") as Boolean
     }
 
+    fun isEggEnabled(egg: String): Boolean {
+        if (!has("eggs.$egg")) return false
+        return get("eggs.$egg.enabled") as Boolean
+    }
+
     fun remove(prop: String): Boolean {
         val success = lodash.unset(config, prop) as Boolean
         return if (success) {
