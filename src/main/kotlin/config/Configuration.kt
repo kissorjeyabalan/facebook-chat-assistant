@@ -57,6 +57,14 @@ class Configuration {
         }
     }
 
+    fun hasAppState(): Boolean {
+        return fs.existsSync(get("facebook.state")) as Boolean
+    }
+
+    fun getAppState(): dynamic {
+        return JSON.parse(fs.readFileSync(get("facebook.state"), "utf-8") as String)
+    }
+
     private fun createDefaultConfig() {
         val obj = object{}
         lodash.set(obj, "facebook.username", "email")
