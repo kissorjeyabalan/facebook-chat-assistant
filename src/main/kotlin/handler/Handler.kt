@@ -1,6 +1,6 @@
 package handler
-import externals.facebook.Event
+import externals.facebook.MessageEvent
 
 interface Handler {
-    fun handle(message: Event): Event
+    fun handle(message: MessageEvent): MessageEvent
 }
