@@ -16,6 +16,8 @@ val creds = if (_config.hasAppState()) {
     """.trimIndent())
 }
 
+val mp = Parser()
+
 fun main(args: Array<String>) {
     println("Starting Emol v3!")
 

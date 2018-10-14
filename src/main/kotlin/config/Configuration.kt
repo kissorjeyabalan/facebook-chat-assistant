@@ -35,6 +35,11 @@ class Configuration {
         }
     }
 
+    fun isCmdEnabled(cmd: String): Boolean {
+        if (!has("commands.$cmd")) return false
+        return get("commands.$cmd.enabled") as Boolean
+    }
+
     fun remove(prop: String): Boolean {
         val success = lodash.unset(config, prop) as Boolean
         return if (success) {
