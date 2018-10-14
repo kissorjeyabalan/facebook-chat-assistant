@@ -20,4 +20,7 @@ external class MessageEvent: Event {
 
 external class Api {
     fun listen(handler: (error: dynamic, message: MessageEvent) -> Unit)
+    fun sendMessage(message: String, threadID: String, callback: (error: dynamic, msgInfo:dynamic) -> Nothing)
+    fun sendMessage(message: String, threadID: String)
+    fun markAsRead(threadID: String)
 }

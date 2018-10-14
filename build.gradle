@@ -5,6 +5,7 @@ buildscript {
     ext.kotlin_version = '1.2.71'
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -15,10 +16,12 @@ apply plugin: 'kotlin2js'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core-js:0.30.2"
 }
 
 compileKotlin2Js.kotlinOptions {
@@ -44,3 +47,8 @@ task assembleWeb(type: Sync) {
 }
 
 assemble.dependsOn assembleWeb
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
