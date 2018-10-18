@@ -3,9 +3,10 @@ import externals.facebook.Api
 import externals.require
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.launch
+import utility.Reddit
 
 val fb = require("facebook-chat-api")
-val _config = Configuration.instance
+val _config = Configuration.shared
 
 val creds = if (_config.hasAppState()) {
     JSON.parse<dynamic>("""

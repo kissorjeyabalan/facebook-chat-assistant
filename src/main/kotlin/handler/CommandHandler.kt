@@ -1,7 +1,6 @@
 package handler
 
 import config.Configuration
-import externals.facebook.Event
 import externals.facebook.MessageEvent
 import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.delay
@@ -10,7 +9,7 @@ import module.command.Command
 import module.command.RepeatCommand
 
 class CommandHandler : Handler {
-    private val trigger = Configuration.instance.get("bot.trigger") as String
+    private val trigger = Configuration.shared.get("bot.trigger") as String
     private val commands: HashMap<String, Command> = HashMap()
 
     init {
@@ -19,7 +18,7 @@ class CommandHandler : Handler {
         )
 
         for (instance in instances) {
-            val enabled = Configuration.instance
+            val enabled = Configuration.shared
                     .isCmdEnabled(instance::class.js.name)
 
             if (enabled) {

@@ -8,7 +8,7 @@ class Configuration {
     val fs = require("fs")
 
     companion object {
-        var instance: Configuration = Configuration()
+        var shared: Configuration = Configuration()
     }
 
     private var config: Any? = null

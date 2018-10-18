@@ -8,17 +8,19 @@ import kotlinx.coroutines.experimental.launch
 import module.command.RepeatCommand
 import module.egg.Egg
 import module.egg.Ping
+import module.egg.RedditFetcher
 
 class RegexHandler : Handler {
     private val eggs = HashMap<Regex, Egg>()
 
     init {
         val instances = arrayListOf(
-                Ping()
+                Ping(),
+                RedditFetcher()
         )
 
         for (instance in instances) {
-            val enabled = Configuration.instance
+            val enabled = Configuration.shared
                     .isEggEnabled(instance::class.js.name)
 
             if (enabled) {

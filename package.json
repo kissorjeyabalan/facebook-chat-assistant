@@ -4,6 +4,7 @@
   "description": "A modular bot for Facebook Messenger Chat",
   "main": "index.js",
   "scripts": {
+    "dev": "gradle build && npm run start",
     "start": "node node/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +24,8 @@
     "js-yaml": "^3.12.0",
     "kotlin": "^1.2.71",
     "kotlinx-coroutines-core": "^0.30.2",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "snoowrap": "^1.15.2"
   },
   "devDependencies": {}
 }
